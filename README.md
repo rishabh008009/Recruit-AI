@@ -28,11 +28,18 @@ The Lovable front-end includes 7 fully functional screens covering login, dashbo
 
 ## 🚀 Getting Started
 
+### Front-End Only (Quick Demo)
 1. Open `index.html` in a modern web browser
-2. Start on the login screen and click "Continue with Google" or "Sign In with Email"
-3. Explore the dashboard with sample subscription data
-4. Add new subscriptions using the "+ Add Subscription" button
-5. Set reminders and manage settings
+2. Explore the UI with sample data
+3. All screens are functional with mock data
+
+### Full-Stack (With Backend)
+1. **Set up Supabase backend** (15 min) - See `QUICK_START_BACKEND.md`
+2. **Configure Google OAuth** - Follow `BACKEND_SETUP.md`
+3. **Connect front-end** - Update `lib/supabase-client.js` with your credentials
+4. **Deploy** - Push to GitHub Pages or Vercel
+
+**Quick Backend Setup**: See `QUICK_START_BACKEND.md` for 15-minute setup guide
 
 ## ✨ Key Features
 
@@ -60,10 +67,20 @@ Login → Dashboard → [Add Subscription | View Details | Set Reminder] → Con
 
 ## 🛠️ Technical Stack
 
+### Front-End
 - Pure HTML5, CSS3, and Vanilla JavaScript
 - No dependencies or build tools required
 - Smooth transitions and animations
-- Local state management
+- Responsive design (mobile, tablet, desktop)
+
+### Backend (Optional)
+- **Supabase**: PostgreSQL database + Auth + Edge Functions
+- **Google OAuth**: Gmail-based authentication
+- **Row Level Security**: Complete data isolation
+- **Real-time**: Live updates across devices
+- **Email Service**: Resend/Gmail/SendGrid for reminders
+
+**See `BACKEND_SUMMARY.md` for complete backend documentation**
 
 ## 💡 Key Takeaway
 
