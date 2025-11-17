@@ -657,10 +657,24 @@ async function handleGoogleSignIn() {
 // Check for authentication on page load
 async function checkAuth() {
     if (auth) {
+        // Check if we're returning from OAuth (has code or access_token in URL)
+        const hashParams = new URLSearchParams(window.location.hash.substring(1));
+        const searchParams = new URLSearchParams(window.location.search);
+        
+        if (hashParams.get('access_token') || searchParams.get('code')) {
+            console.log('🔄 Processing OAuth callback...');
+            // Wait a bit for Supabase to process the session
+            await new Promise(resolve => setTimeout(resolve, 1000));
+        }
+        
         const { session } = await auth.getSession();
         if (session) {
             console.log('✅ User is authenticated:', session.user.email);
             app.currentUser = session.user;
+            
+            // Clean up URL
+            window.history.replaceState({}, document.title, window.location.pathname);
+            
             navigateTo('dashboard');
         } else {
             console.log('ℹ️ No active session');
