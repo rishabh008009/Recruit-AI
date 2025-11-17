@@ -3,19 +3,23 @@
 
 // Import Supabase client (optional - falls back to demo mode if not configured)
 let supabase, auth, db;
+let supabaseLoaded = false;
 
 // Try to load Supabase
-(async () => {
+async function loadSupabase() {
     try {
         const supabaseModule = await import('./lib/supabase-client.js');
         supabase = supabaseModule.supabase;
         auth = supabaseModule.auth;
         db = supabaseModule.db;
+        supabaseLoaded = true;
         console.log('✅ Supabase connected');
+        return true;
     } catch (error) {
         console.log('⚠️ Running in demo mode (Supabase not configured)', error);
+        return false;
     }
-})();
+}
 
 const app = {
     currentScreen: 'login',
@@ -37,7 +41,17 @@ const app = {
 // Initialize app
 async function init() {
     console.log('🚀 SubSentry initializing...');
-    await checkAuth();
+    
+    // Load Supabase first
+    await loadSupabase();
+    
+    try {
+        await checkAuth();
+    } catch (error) {
+        console.error('❌ Error during initialization:', error);
+        // Fallback to login screen
+        navigateTo('login');
+    }
 }
 
 // Navigation function
