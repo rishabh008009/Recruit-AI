@@ -642,12 +642,33 @@ function renderSidebar(activeItem) {
                 <a class="nav-item ${activeItem === 'settings' ? 'active' : ''}" onclick="navigateTo('settings')">
                     <span>⚙️</span> Settings
                 </a>
+                <a class="nav-item" onclick="handleSignOut()" style="margin-top: auto; color: #F44336;">
+                    <span>🚪</span> Sign Out
+                </a>
             </nav>
         </div>
     `;
 }
 
 // Authentication Handlers
+async function handleSignOut() {
+    if (auth) {
+        console.log('🚪 Signing out...');
+        const { error } = await auth.signOut();
+        if (error) {
+            console.error('Sign out error:', error);
+            alert('Failed to sign out');
+        } else {
+            console.log('✅ Signed out successfully');
+            app.currentUser = null;
+            navigateTo('login');
+        }
+    } else {
+        // Demo mode
+        navigateTo('login');
+    }
+}
+
 async function handleGoogleSignIn() {
     if (auth) {
         // Supabase is configured - use real authentication
@@ -770,6 +791,7 @@ function attachEventListeners() {
 // Make functions globally accessible for onclick handlers
 window.navigateTo = navigateTo;
 window.handleGoogleSignIn = handleGoogleSignIn;
+window.handleSignOut = handleSignOut;
 window.handleCreateSubscription = handleCreateSubscription;
 window.handleSetReminder = handleSetReminder;
 window.handleEditSubscription = handleEditSubscription;
