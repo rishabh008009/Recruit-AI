@@ -45,6 +45,6 @@ yarn-error.log*
 # Supabase
 .supabase/
 
-# Optional: Uncomment if you add node_modules later
-# node_modules/
-# dist/
+# Dependencies and build
+node_modules
+dist
