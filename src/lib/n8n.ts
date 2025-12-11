@@ -134,16 +134,8 @@ function parseGeminiResponse(data: unknown, candidateName: string): ResumeAnalys
   }
 }
 
-// Extract text from uploaded file (PDF, DOCX, or text)
+// Extract text from uploaded file (text files only)
 export async function extractTextFromFile(file: File): Promise<string> {
-  const fileName = file.name.toLowerCase();
-  
-  // Handle PDF files
-  if (fileName.endsWith('.pdf')) {
-    return extractTextFromPDF(file);
-  }
-  
-  // Handle text files
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     
@@ -158,32 +150,6 @@ export async function extractTextFromFile(file: File): Promise<string> {
     
     reader.readAsText(file);
   });
-}
-
-// Extract text from PDF using pdf.js
-async function extractTextFromPDF(file: File): Promise<string> {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const pdfjsLib = await import('pdfjs-dist') as any;
-  
-  // Set worker source
-  pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
-  
-  const arrayBuffer = await file.arrayBuffer();
-  const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-  
-  let fullText = '';
-  
-  for (let i = 1; i <= pdf.numPages; i++) {
-    const page = await pdf.getPage(i);
-    const textContent = await page.getTextContent();
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const pageText = textContent.items
-      .map((item: any) => item.str || '')
-      .join(' ');
-    fullText += pageText + '\n';
-  }
-  
-  return fullText.trim();
 }
 
 // Check if n8n is configured

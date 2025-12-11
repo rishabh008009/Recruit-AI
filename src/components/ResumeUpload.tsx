@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { Upload, FileText, Loader2, CheckCircle, AlertCircle, X } from 'lucide-react';
+import { FileText, Loader2, CheckCircle, AlertCircle, X, Sparkles } from 'lucide-react';
 import { analyzeResume, extractTextFromFile, isN8nConfigured } from '../lib/n8n';
 
 interface ResumeUploadProps {
@@ -16,7 +16,7 @@ interface ResumeUploadProps {
 export function ResumeUpload({ jobTitle, jobDescription, onAnalysisComplete }: ResumeUploadProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [candidateName, setCandidateName] = useState('');
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [, setSelectedFile] = useState<File | null>(null);
   const [resumeText, setResumeText] = useState('');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -103,8 +103,8 @@ export function ResumeUpload({ jobTitle, jobDescription, onAnalysisComplete }: R
         onClick={() => setIsOpen(true)}
         className="inline-flex items-center gap-2 px-4 py-2 bg-primary-600 text-white font-medium rounded-lg hover:bg-primary-700 transition-colors"
       >
-        <Upload className="w-4 h-4" />
-        Analyze New Resume
+        <Sparkles className="w-4 h-4" />
+        Analyze New Resume with AI
       </button>
     );
   }
@@ -156,51 +156,38 @@ export function ResumeUpload({ jobTitle, jobDescription, onAnalysisComplete }: R
                 </p>
               </div>
 
-              {/* File Upload */}
+              {/* Resume Text Input */}
               <div>
                 <label className="block text-sm font-medium text-neutral-700 mb-1">
-                  Upload Resume
-                </label>
-                <div
-                  onClick={() => fileInputRef.current?.click()}
-                  className="border-2 border-dashed border-neutral-300 rounded-lg p-6 text-center cursor-pointer hover:border-primary-400 transition-colors"
-                >
-                  {selectedFile ? (
-                    <div className="flex items-center justify-center gap-2 text-primary-600">
-                      <FileText className="w-5 h-5" />
-                      <span>{selectedFile.name}</span>
-                    </div>
-                  ) : (
-                    <>
-                      <Upload className="w-8 h-8 text-neutral-400 mx-auto mb-2" />
-                      <p className="text-sm text-neutral-600">
-                        Click to upload resume (.pdf or .txt)
-                      </p>
-                    </>
-                  )}
-                </div>
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept=".txt,.text,.pdf"
-                  onChange={handleFileSelect}
-                  className="hidden"
-                />
-              </div>
-
-              {/* Or paste text */}
-              <div>
-                <label className="block text-sm font-medium text-neutral-700 mb-1">
-                  Or Paste Resume Text
+                  Resume Content
                 </label>
                 <textarea
                   value={resumeText}
                   onChange={(e) => setResumeText(e.target.value)}
-                  placeholder="Paste the resume content here..."
-                  rows={6}
+                  placeholder="Paste the resume content here...
+
+Example:
+John Doe
+Software Engineer with 5 years experience
+Skills: React, Node.js, TypeScript, AWS
+Education: BS Computer Science
+Experience: Led development of e-commerce platform..."
+                  rows={8}
                   className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 resize-none"
                 />
+                <p className="text-xs text-neutral-500 mt-1">
+                  Tip: Copy and paste text from a resume PDF or document
+                </p>
               </div>
+              
+              {/* Hidden file input - kept for future use */}
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept=".txt,.text"
+                onChange={handleFileSelect}
+                className="hidden"
+              />
 
               {/* Error */}
               {error && (
