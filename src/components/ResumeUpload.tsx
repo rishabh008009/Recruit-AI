@@ -174,7 +174,7 @@ export function ResumeUpload({ jobTitle, jobDescription, onAnalysisComplete }: R
                     <>
                       <Upload className="w-8 h-8 text-neutral-400 mx-auto mb-2" />
                       <p className="text-sm text-neutral-600">
-                        Click to upload resume (.txt file)
+                        Click to upload resume (.pdf or .txt)
                       </p>
                     </>
                   )}
@@ -182,7 +182,7 @@ export function ResumeUpload({ jobTitle, jobDescription, onAnalysisComplete }: R
                 <input
                   ref={fileInputRef}
                   type="file"
-                  accept=".txt,.text"
+                  accept=".txt,.text,.pdf"
                   onChange={handleFileSelect}
                   className="hidden"
                 />
