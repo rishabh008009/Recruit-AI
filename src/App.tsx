@@ -10,6 +10,7 @@ import { CandidateDetailView } from './components/CandidateDetailView';
 import { LoginPage } from './components/LoginPage';
 import { SignUpPage } from './components/SignUpPage';
 import { UserMenu } from './components/UserMenu';
+import { ResumeUpload } from './components/ResumeUpload';
 import { supabase, auth } from './lib/supabase';
 
 type AuthView = 'login' | 'signup';
@@ -20,6 +21,8 @@ function App() {
   const [authView, setAuthView] = useState<AuthView>('login');
   const [selectedCandidate, setSelectedCandidate] = useState<Candidate | null>(null);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
+  const [candidates, setCandidates] = useState<Candidate[]>(mockCandidates);
+  const [metrics, setMetrics] = useState(mockMetrics);
 
   // Check for existing session and listen to auth changes
   useEffect(() => {
@@ -100,6 +103,32 @@ function App() {
     setTimeout(() => setSelectedCandidate(null), 300);
   };
 
+  // Handle new candidate from AI analysis
+  const handleNewCandidate = (result: {
+    candidateName: string;
+    score: number;
+    analysis: string;
+    recommendation: string;
+  }) => {
+    const newCandidate: Candidate = {
+      id: `candidate-${Date.now()}`,
+      name: result.candidateName,
+      email: `${result.candidateName.toLowerCase().replace(/\s+/g, '.')}@email.com`,
+      roleApplied: mockJobs[0]?.title || 'Senior Product Manager',
+      appliedDate: new Date(),
+      status: 'New',
+      aiFitScore: result.score,
+      aiAnalysis: result.analysis,
+    };
+
+    setCandidates(prev => [newCandidate, ...prev]);
+    setMetrics(prev => ({
+      ...prev,
+      candidatesProcessed: prev.candidatesProcessed + 1,
+      pendingReview: prev.pendingReview + 1,
+    }));
+  };
+
   // Show loading state
   if (isLoading) {
     return (
@@ -166,14 +195,23 @@ function App() {
         </div>
 
         {/* Command Center - Metrics */}
-        <CommandCenter metrics={mockMetrics} />
+        <CommandCenter metrics={metrics} />
+
+        {/* AI Resume Analysis Button */}
+        <div className="mb-6">
+          <ResumeUpload
+            jobTitle={mockJobs[0]?.title || 'Senior Product Manager'}
+            jobDescription={mockJobs[0]?.description || 'Looking for an experienced product manager with strong technical background.'}
+            onAnalysisComplete={handleNewCandidate}
+          />
+        </div>
 
         {/* Active Jobs */}
         <ActiveJobs jobs={mockJobs} />
 
         {/* Candidate Table */}
         <CandidateTable 
-          candidates={mockCandidates} 
+          candidates={candidates} 
           onCandidateClick={handleCandidateClick}
         />
       </main>

@@ -60,6 +60,7 @@ export const mockJobs: Job[] = [
     department: 'Product',
     openings: 2,
     applicants: 45,
+    description: 'We are looking for an experienced Senior Product Manager with 5+ years of experience in B2B SaaS products. The ideal candidate will have a strong track record in roadmap planning, stakeholder management, and data-driven decision making. Experience with enterprise software, P&L ownership, and cross-functional team leadership is required. Technical background preferred.',
   },
   {
     id: 'job-2',
@@ -67,6 +68,7 @@ export const mockJobs: Job[] = [
     department: 'Engineering',
     openings: 3,
     applicants: 97,
+    description: 'Seeking a Full Stack Engineer with expertise in React, TypeScript, Node.js, and PostgreSQL. Must have experience building scalable web applications and working in agile teams. AWS certification and cloud deployment experience is a plus. Strong system design skills and familiarity with CI/CD pipelines required.',
   },
 ];
 

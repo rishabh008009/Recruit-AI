@@ -18,6 +18,7 @@ export interface Job {
   department: string;
   openings: number;
   applicants: number;
+  description?: string;
 }
 
 export interface DashboardMetrics {
