@@ -162,7 +162,8 @@ export async function extractTextFromFile(file: File): Promise<string> {
 
 // Extract text from PDF using pdf.js
 async function extractTextFromPDF(file: File): Promise<string> {
-  const pdfjsLib = await import('pdfjs-dist');
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const pdfjsLib = await import('pdfjs-dist') as any;
   
   // Set worker source
   pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
@@ -175,8 +176,9 @@ async function extractTextFromPDF(file: File): Promise<string> {
   for (let i = 1; i <= pdf.numPages; i++) {
     const page = await pdf.getPage(i);
     const textContent = await page.getTextContent();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const pageText = textContent.items
-      .map((item: { str?: string }) => item.str || '')
+      .map((item: any) => item.str || '')
       .join(' ');
     fullText += pageText + '\n';
   }
