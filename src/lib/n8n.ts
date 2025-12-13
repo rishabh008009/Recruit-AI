@@ -123,14 +123,47 @@ function parseGeminiResponse(data: unknown, candidateName: string): ResumeAnalys
   }
 }
 
-// Extract text from uploaded file
+// Extract text from uploaded file (supports PDF and TXT)
 export async function extractTextFromFile(file: File): Promise<string> {
+  const fileName = file.name.toLowerCase();
+  
+  if (fileName.endsWith('.pdf')) {
+    return extractTextFromPDF(file);
+  }
+  
+  // Default: read as text
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = (event) => resolve(event.target?.result as string);
     reader.onerror = () => reject(new Error('Failed to read file'));
     reader.readAsText(file);
   });
+}
+
+// Extract text from PDF
+async function extractTextFromPDF(file: File): Promise<string> {
+  const pdfjsLib = await import('pdfjs-dist');
+  
+  // Set worker
+  pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js`;
+  
+  const arrayBuffer = await file.arrayBuffer();
+  const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+  
+  let fullText = '';
+  
+  for (let i = 1; i <= pdf.numPages; i++) {
+    const page = await pdf.getPage(i);
+    const textContent = await page.getTextContent();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const pageText = (textContent.items as any[])
+      .filter((item) => 'str' in item)
+      .map((item) => item.str || '')
+      .join(' ');
+    fullText += pageText + '\n';
+  }
+  
+  return fullText.trim();
 }
 
 // Check if n8n is configured
