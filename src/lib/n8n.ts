@@ -1,7 +1,6 @@
 // n8n Integration Service for Recruit AI
 // This connects to your n8n workflow for AI-powered resume analysis
 
-// Your n8n webhook URL - replace with your actual Production URL from n8n
 const N8N_WEBHOOK_URL = import.meta.env.VITE_N8N_WEBHOOK_URL || '';
 
 export interface ResumeAnalysisRequest {
@@ -22,7 +21,7 @@ export interface ResumeAnalysisResponse {
 // Analyze resume using n8n + Gemini workflow
 export async function analyzeResume(request: ResumeAnalysisRequest): Promise<ResumeAnalysisResponse> {
   if (!N8N_WEBHOOK_URL) {
-    throw new Error('N8N_WEBHOOK_URL is not configured. Please add VITE_N8N_WEBHOOK_URL to your .env.local file.');
+    throw new Error('n8n webhook is not configured. Please add VITE_N8N_WEBHOOK_URL to your environment.');
   }
 
   try {
@@ -44,9 +43,6 @@ export async function analyzeResume(request: ResumeAnalysisRequest): Promise<Res
     }
 
     const data = await response.json();
-    
-    // Parse the Gemini response from n8n
-    // The response structure depends on your n8n workflow configuration
     return parseGeminiResponse(data, request.candidateName);
   } catch (error) {
     console.error('Error analyzing resume:', error);
@@ -57,10 +53,8 @@ export async function analyzeResume(request: ResumeAnalysisRequest): Promise<Res
 // Parse the response from Gemini via n8n
 function parseGeminiResponse(data: unknown, candidateName: string): ResumeAnalysisResponse {
   try {
-    // Handle different response structures from n8n
     let content = '';
     
-    // If response is directly from Gemini API via n8n
     if (data && typeof data === 'object') {
       const responseData = data as Record<string, unknown>;
       
@@ -83,15 +77,12 @@ function parseGeminiResponse(data: unknown, candidateName: string): ResumeAnalys
       else if (typeof responseData.text === 'string') {
         content = responseData.text;
       }
-      // Check for output field
-      else if (typeof responseData.output === 'string') {
-        content = responseData.output;
-      }
     }
 
-    // Try to parse JSON from the content
     if (content) {
-      // Look for JSON in the response
+      // Clean markdown code blocks
+      content = content.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+      
       const jsonMatch = content.match(/\{[\s\S]*\}/);
       if (jsonMatch) {
         const parsed = JSON.parse(jsonMatch[0]);
@@ -104,7 +95,6 @@ function parseGeminiResponse(data: unknown, candidateName: string): ResumeAnalys
         };
       }
       
-      // If no JSON, create response from text
       return {
         score: 50,
         analysis: content,
@@ -114,16 +104,15 @@ function parseGeminiResponse(data: unknown, candidateName: string): ResumeAnalys
       };
     }
 
-    // Fallback response
     return {
       score: 50,
-      analysis: `Analysis completed for ${candidateName}. Please review the candidate manually.`,
+      analysis: `Analysis completed for ${candidateName}. Please review manually.`,
       strengths: [],
       weaknesses: [],
       recommendation: 'review',
     };
   } catch (error) {
-    console.error('Error parsing Gemini response:', error);
+    console.error('Error parsing response:', error);
     return {
       score: 50,
       analysis: `Unable to parse AI analysis for ${candidateName}. Please review manually.`,
@@ -134,20 +123,12 @@ function parseGeminiResponse(data: unknown, candidateName: string): ResumeAnalys
   }
 }
 
-// Extract text from uploaded file (text files only)
+// Extract text from uploaded file
 export async function extractTextFromFile(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
-    
-    reader.onload = (event) => {
-      const text = event.target?.result as string;
-      resolve(text);
-    };
-    
-    reader.onerror = () => {
-      reject(new Error('Failed to read file'));
-    };
-    
+    reader.onload = (event) => resolve(event.target?.result as string);
+    reader.onerror = () => reject(new Error('Failed to read file'));
     reader.readAsText(file);
   });
 }
