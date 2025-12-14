@@ -155,7 +155,7 @@ function App() {
   return (
     <div className="min-h-screen bg-neutral-50">
       {/* Gradient Header */}
-      <header className="relative overflow-hidden bg-gradient-to-r from-violet-900 via-purple-800 to-indigo-900">
+      <header className="relative overflow-hidden bg-gradient-to-r from-violet-900 via-purple-800 to-indigo-900 z-50">
         {/* Animated background elements */}
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-500/30 rounded-full blur-3xl" />
