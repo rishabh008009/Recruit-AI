@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { Send, CheckCircle, Zap, Mail } from 'lucide-react';
+import { Send, CheckCircle, Zap, Mail, Loader2, AlertCircle } from 'lucide-react';
 import { Candidate } from '../types';
+import { sendCandidateEmail, isEmailWebhookConfigured } from '../lib/n8n';
 
 interface AutoPilotActionsProps {
   candidate: Candidate;
@@ -37,6 +38,9 @@ The Recruit AI Team`;
 
 export function AutoPilotActions({ candidate, onActionComplete }: AutoPilotActionsProps) {
   const [actionSent, setActionSent] = useState(false);
+  const [isSending, setIsSending] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  
   const isHighScore = candidate.aiFitScore > 70;
   
   const emailContent = isHighScore 
@@ -46,9 +50,33 @@ export function AutoPilotActions({ candidate, onActionComplete }: AutoPilotActio
   const actionType = isHighScore ? 'interview' : 'rejection';
   const buttonText = isHighScore ? 'Send Interview Invite' : 'Send Rejection';
 
-  const handleSendAction = () => {
-    setActionSent(true);
-    onActionComplete(actionType);
+  const handleSendAction = async () => {
+    // Check if webhook is configured
+    if (!isEmailWebhookConfigured()) {
+      setError('Email webhook not configured. Add VITE_N8N_EMAIL_WEBHOOK_URL to environment.');
+      return;
+    }
+
+    setIsSending(true);
+    setError(null);
+
+    try {
+      await sendCandidateEmail({
+        candidateName: candidate.name,
+        candidateEmail: candidate.email,
+        jobTitle: candidate.roleApplied,
+        aiFitScore: candidate.aiFitScore,
+        emailType: actionType,
+        emailContent: emailContent,
+      });
+
+      setActionSent(true);
+      onActionComplete(actionType);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to send email');
+    } finally {
+      setIsSending(false);
+    }
   };
 
   return (
@@ -88,16 +116,33 @@ export function AutoPilotActions({ candidate, onActionComplete }: AutoPilotActio
             />
           </div>
           
+          {error && (
+            <div className="flex items-center gap-2 p-3 mb-4 bg-red-50 border border-red-200 rounded-xl text-red-700">
+              <AlertCircle className="w-4 h-4 flex-shrink-0" />
+              <span className="text-sm">{error}</span>
+            </div>
+          )}
+          
           <button
             onClick={handleSendAction}
-            className={`inline-flex items-center gap-2 px-5 py-3 text-white font-semibold rounded-xl transition-all duration-300 shadow-lg hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-offset-2 ${
+            disabled={isSending}
+            className={`inline-flex items-center gap-2 px-5 py-3 text-white font-semibold rounded-xl transition-all duration-300 shadow-lg hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 ${
               isHighScore 
                 ? 'bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 focus:ring-green-500 hover:shadow-green-500/25' 
                 : 'bg-gradient-to-r from-neutral-600 to-neutral-700 hover:from-neutral-700 hover:to-neutral-800 focus:ring-neutral-500 hover:shadow-neutral-500/25'
             }`}
           >
-            <Send className="w-4 h-4" />
-            {buttonText}
+            {isSending ? (
+              <>
+                <Loader2 className="w-4 h-4 animate-spin" />
+                Sending...
+              </>
+            ) : (
+              <>
+                <Send className="w-4 h-4" />
+                {buttonText}
+              </>
+            )}
           </button>
         </>
       )}

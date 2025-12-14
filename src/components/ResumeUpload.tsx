@@ -16,6 +16,7 @@ interface ResumeUploadProps {
 export function ResumeUpload({ jobTitle, jobDescription, onAnalysisComplete }: ResumeUploadProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [candidateName, setCandidateName] = useState('');
+  const [candidateEmail, setCandidateEmail] = useState('');
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [resumeText, setResumeText] = useState('');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -44,6 +45,18 @@ export function ResumeUpload({ jobTitle, jobDescription, onAnalysisComplete }: R
       return;
     }
 
+    if (!candidateEmail.trim()) {
+      setError('Please enter the candidate email');
+      return;
+    }
+
+    // Basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(candidateEmail)) {
+      setError('Please enter a valid email address');
+      return;
+    }
+
     if (!resumeText.trim()) {
       setError('Please upload a resume or paste the resume text');
       return;
@@ -60,6 +73,7 @@ export function ResumeUpload({ jobTitle, jobDescription, onAnalysisComplete }: R
     try {
       const result = await analyzeResume({
         candidateName,
+        candidateEmail,
         resumeText,
         jobDescription,
         jobTitle,
@@ -76,6 +90,7 @@ export function ResumeUpload({ jobTitle, jobDescription, onAnalysisComplete }: R
       setTimeout(() => {
         setIsOpen(false);
         setCandidateName('');
+        setCandidateEmail('');
         setSelectedFile(null);
         setResumeText('');
         setSuccess(false);
@@ -90,6 +105,7 @@ export function ResumeUpload({ jobTitle, jobDescription, onAnalysisComplete }: R
   const handleClose = () => {
     setIsOpen(false);
     setCandidateName('');
+    setCandidateEmail('');
     setSelectedFile(null);
     setResumeText('');
     setError(null);
@@ -151,7 +167,7 @@ export function ResumeUpload({ jobTitle, jobDescription, onAnalysisComplete }: R
                 <CheckCircle className="w-12 h-12 text-green-600" />
               </div>
               <p className="text-xl font-bold text-neutral-900">Analysis Complete!</p>
-              <p className="text-neutral-600 mt-1">Candidate has been added to the pipeline.</p>
+              <p className="text-neutral-600 mt-1">Candidate added & email sent automatically.</p>
             </div>
           ) : (
             <>
@@ -165,6 +181,20 @@ export function ResumeUpload({ jobTitle, jobDescription, onAnalysisComplete }: R
                   value={candidateName}
                   onChange={(e) => setCandidateName(e.target.value)}
                   placeholder="Enter candidate's full name"
+                  className="w-full px-4 py-3 bg-neutral-50 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300"
+                />
+              </div>
+
+              {/* Candidate Email */}
+              <div>
+                <label className="block text-sm font-semibold text-neutral-700 mb-2">
+                  Candidate Email
+                </label>
+                <input
+                  type="email"
+                  value={candidateEmail}
+                  onChange={(e) => setCandidateEmail(e.target.value)}
+                  placeholder="Enter candidate's email address"
                   className="w-full px-4 py-3 bg-neutral-50 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300"
                 />
               </div>

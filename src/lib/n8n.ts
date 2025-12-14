@@ -5,6 +5,7 @@ const N8N_WEBHOOK_URL = import.meta.env.VITE_N8N_WEBHOOK_URL || '';
 
 export interface ResumeAnalysisRequest {
   candidateName: string;
+  candidateEmail: string;
   resumeText: string;
   jobDescription: string;
   jobTitle: string;
@@ -32,6 +33,7 @@ export async function analyzeResume(request: ResumeAnalysisRequest): Promise<Res
       },
       body: JSON.stringify({
         candidateName: request.candidateName,
+        candidateEmail: request.candidateEmail,
         resumeText: request.resumeText,
         jobDescription: request.jobDescription,
         jobTitle: request.jobTitle,
@@ -200,4 +202,65 @@ async function extractTextFromPDF(file: File): Promise<string> {
 // Check if n8n is configured
 export function isN8nConfigured(): boolean {
   return !!N8N_WEBHOOK_URL;
+}
+
+// Email webhook URL (separate from resume analysis)
+const N8N_EMAIL_WEBHOOK_URL = import.meta.env.VITE_N8N_EMAIL_WEBHOOK_URL || '';
+
+export interface SendEmailRequest {
+  candidateName: string;
+  candidateEmail: string;
+  jobTitle: string;
+  aiFitScore: number;
+  emailType: 'interview' | 'rejection';
+  emailContent: string;
+}
+
+export interface SendEmailResponse {
+  success: boolean;
+  message: string;
+}
+
+// Send interview invite or rejection email via n8n
+export async function sendCandidateEmail(request: SendEmailRequest): Promise<SendEmailResponse> {
+  if (!N8N_EMAIL_WEBHOOK_URL) {
+    throw new Error('n8n email webhook is not configured. Please add VITE_N8N_EMAIL_WEBHOOK_URL to your environment.');
+  }
+
+  try {
+    const response = await fetch(N8N_EMAIL_WEBHOOK_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        candidateName: request.candidateName,
+        candidateEmail: request.candidateEmail,
+        jobTitle: request.jobTitle,
+        aiFitScore: request.aiFitScore,
+        emailType: request.emailType,
+        emailContent: request.emailContent,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`n8n email webhook error: ${response.status} ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    console.log('Email webhook response:', data);
+    
+    return {
+      success: true,
+      message: data.message || 'Email sent successfully',
+    };
+  } catch (error) {
+    console.error('Error sending email:', error);
+    throw error;
+  }
+}
+
+// Check if email webhook is configured
+export function isEmailWebhookConfigured(): boolean {
+  return !!N8N_EMAIL_WEBHOOK_URL;
 }
