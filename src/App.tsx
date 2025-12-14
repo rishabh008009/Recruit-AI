@@ -12,7 +12,7 @@ import { SignUpPage } from './components/SignUpPage';
 import { UserMenu } from './components/UserMenu';
 import { ResumeUpload } from './components/ResumeUpload';
 import { supabase, auth } from './lib/supabase';
-import { fetchCandidates, addCandidate, getCandidateMetrics } from './lib/candidates';
+import { fetchCandidates, addCandidate, deleteCandidate, getCandidateMetrics } from './lib/candidates';
 import { DashboardMetrics } from './types';
 
 type AuthView = 'login' | 'signup';
@@ -133,6 +133,21 @@ function App() {
   const handleCloseDetail = () => {
     setIsDetailOpen(false);
     setTimeout(() => setSelectedCandidate(null), 300);
+  };
+
+  const handleDeleteCandidate = async (candidateId: string) => {
+    try {
+      await deleteCandidate(candidateId);
+      setCandidates(prev => prev.filter(c => c.id !== candidateId));
+      setMetrics(prev => ({
+        ...prev,
+        candidatesProcessed: Math.max(0, prev.candidatesProcessed - 1),
+        pendingReview: Math.max(0, prev.pendingReview - 1),
+      }));
+    } catch (error) {
+      console.error('Error deleting candidate:', error);
+      throw error;
+    }
   };
 
   const handleNewCandidate = async (result: {
@@ -269,6 +284,7 @@ function App() {
         candidate={selectedCandidate}
         isOpen={isDetailOpen}
         onClose={handleCloseDetail}
+        onDelete={handleDeleteCandidate}
       />
     </div>
   );

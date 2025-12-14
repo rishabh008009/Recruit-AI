@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
-import { X, Mail, Calendar, Briefcase, Sparkles, TrendingUp, AlertTriangle, CheckCircle } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { X, Mail, Calendar, Briefcase, Sparkles, TrendingUp, AlertTriangle, CheckCircle, Trash2 } from 'lucide-react';
 import { Candidate } from '../types';
 import { ScoreBadge } from './ScoreBadge';
 import { AutoPilotActions } from './AutoPilotActions';
@@ -9,6 +9,7 @@ interface CandidateDetailViewProps {
   candidate: Candidate | null;
   isOpen: boolean;
   onClose: () => void;
+  onDelete?: (candidateId: string) => void;
 }
 
 function getScoreInsight(score: number): { icon: React.ReactNode; text: string; color: string } {
@@ -33,17 +34,24 @@ function getScoreInsight(score: number): { icon: React.ReactNode; text: string; 
   }
 }
 
-export function CandidateDetailView({ candidate, isOpen, onClose }: CandidateDetailViewProps) {
+export function CandidateDetailView({ candidate, isOpen, onClose, onDelete }: CandidateDetailViewProps) {
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && isOpen) {
-        onClose();
+        if (showDeleteConfirm) {
+          setShowDeleteConfirm(false);
+        } else {
+          onClose();
+        }
       }
     };
     
     document.addEventListener('keydown', handleEscape);
     return () => document.removeEventListener('keydown', handleEscape);
-  }, [isOpen, onClose]);
+  }, [isOpen, onClose, showDeleteConfirm]);
 
   useEffect(() => {
     if (isOpen) {
@@ -56,10 +64,31 @@ export function CandidateDetailView({ candidate, isOpen, onClose }: CandidateDet
     };
   }, [isOpen]);
 
+  // Reset delete confirm when panel closes
+  useEffect(() => {
+    if (!isOpen) {
+      setShowDeleteConfirm(false);
+      setIsDeleting(false);
+    }
+  }, [isOpen]);
+
   if (!candidate) return null;
 
   const handleActionComplete = (action: 'interview' | 'rejection') => {
     console.log(`Action completed: ${action} for ${candidate.name}`);
+  };
+
+  const handleDelete = async () => {
+    if (!onDelete) return;
+    
+    setIsDeleting(true);
+    try {
+      await onDelete(candidate.id);
+      onClose();
+    } catch (error) {
+      console.error('Error deleting candidate:', error);
+      setIsDeleting(false);
+    }
   };
 
   const insight = getScoreInsight(candidate.aiFitScore);
@@ -104,15 +133,51 @@ export function CandidateDetailView({ candidate, isOpen, onClose }: CandidateDet
                   <p className="text-purple-200 mt-0.5">{candidate.roleApplied}</p>
                 </div>
               </div>
-              <button
-                onClick={onClose}
-                className="p-2 text-white/70 hover:text-white hover:bg-white/10 rounded-xl transition-colors focus:outline-none focus:ring-2 focus:ring-white/50"
-                aria-label="Close panel"
-              >
-                <X className="w-5 h-5" />
-              </button>
+              <div className="flex items-center gap-2">
+                {onDelete && (
+                  <button
+                    onClick={() => setShowDeleteConfirm(true)}
+                    className="p-2 text-white/70 hover:text-red-300 hover:bg-red-500/20 rounded-xl transition-colors focus:outline-none focus:ring-2 focus:ring-white/50"
+                    aria-label="Delete candidate"
+                  >
+                    <Trash2 className="w-5 h-5" />
+                  </button>
+                )}
+                <button
+                  onClick={onClose}
+                  className="p-2 text-white/70 hover:text-white hover:bg-white/10 rounded-xl transition-colors focus:outline-none focus:ring-2 focus:ring-white/50"
+                  aria-label="Close panel"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
             </div>
           </div>
+
+          {/* Delete Confirmation */}
+          {showDeleteConfirm && (
+            <div className="px-6 py-4 bg-red-50 border-b border-red-200">
+              <p className="text-red-800 font-medium mb-3">
+                Are you sure you want to delete {candidate.name}?
+              </p>
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setShowDeleteConfirm(false)}
+                  className="px-4 py-2 text-sm font-medium text-neutral-700 bg-white border border-neutral-300 rounded-lg hover:bg-neutral-50 transition-colors"
+                  disabled={isDeleting}
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleDelete}
+                  disabled={isDeleting}
+                  className="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition-colors disabled:opacity-50"
+                >
+                  {isDeleting ? 'Deleting...' : 'Yes, Delete'}
+                </button>
+              </div>
+            </div>
+          )}
 
           {/* Content */}
           <div className="flex-1 px-6 py-6">
