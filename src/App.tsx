@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Sparkles } from 'lucide-react';
 import { Candidate } from './types';
 import { User } from './types/auth';
-import { mockCandidates, mockJobs, mockMetrics } from './data/mockData';
+import { mockJobs } from './data/mockData';
 import { CommandCenter } from './components/CommandCenter';
 import { ActiveJobs } from './components/ActiveJobs';
 import { CandidateTable } from './components/CandidateTable';
@@ -12,6 +12,8 @@ import { SignUpPage } from './components/SignUpPage';
 import { UserMenu } from './components/UserMenu';
 import { ResumeUpload } from './components/ResumeUpload';
 import { supabase, auth } from './lib/supabase';
+import { fetchCandidates, addCandidate, getCandidateMetrics } from './lib/candidates';
+import { DashboardMetrics } from './types';
 
 type AuthView = 'login' | 'signup';
 
@@ -21,8 +23,35 @@ function App() {
   const [authView, setAuthView] = useState<AuthView>('login');
   const [selectedCandidate, setSelectedCandidate] = useState<Candidate | null>(null);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
-  const [candidates, setCandidates] = useState<Candidate[]>(mockCandidates);
-  const [metrics, setMetrics] = useState(mockMetrics);
+  const [candidates, setCandidates] = useState<Candidate[]>([]);
+  const [metrics, setMetrics] = useState<DashboardMetrics>({
+    candidatesProcessed: 0,
+    interviewsScheduled: 0,
+    timeSaved: 0,
+    pendingReview: 0,
+  });
+
+  // Load candidates from database
+  const loadCandidates = useCallback(async () => {
+    try {
+      const dbCandidates = await fetchCandidates();
+      setCandidates(dbCandidates);
+      
+      // Update metrics
+      const dbMetrics = await getCandidateMetrics();
+      setMetrics(prev => ({
+        ...prev,
+        candidatesProcessed: dbMetrics.total,
+        interviewsScheduled: dbMetrics.interviews,
+        pendingReview: dbMetrics.pending,
+        timeSaved: Math.round(dbMetrics.total * 0.2), // ~12 min saved per candidate
+      }));
+    } catch (error) {
+      console.error('Error loading candidates:', error);
+      // If table doesn't exist yet, just use empty array
+      setCandidates([]);
+    }
+  }, []);
 
   useEffect(() => {
     const initAuth = async () => {
@@ -59,6 +88,7 @@ function App() {
           setAuthView('login');
         } else if (event === 'SIGNED_OUT') {
           setUser(null);
+          setCandidates([]);
         }
         
         setIsLoading(false);
@@ -69,6 +99,13 @@ function App() {
       subscription.unsubscribe();
     };
   }, []);
+
+  // Load candidates when user logs in
+  useEffect(() => {
+    if (user) {
+      loadCandidates();
+    }
+  }, [user, loadCandidates]);
 
   const handleLogin = () => {};
 
@@ -82,6 +119,7 @@ function App() {
       setUser(null);
       setSelectedCandidate(null);
       setIsDetailOpen(false);
+      setCandidates([]);
     } catch (error) {
       console.error('Error signing out:', error);
     }
@@ -97,29 +135,44 @@ function App() {
     setTimeout(() => setSelectedCandidate(null), 300);
   };
 
-  const handleNewCandidate = (result: {
+  const handleNewCandidate = async (result: {
     candidateName: string;
     score: number;
     analysis: string;
     recommendation: string;
   }) => {
-    const newCandidate: Candidate = {
-      id: `candidate-${Date.now()}`,
-      name: result.candidateName,
-      email: `${result.candidateName.toLowerCase().replace(/\s+/g, '.')}@email.com`,
-      roleApplied: mockJobs[0]?.title || 'Senior Product Manager',
-      appliedDate: new Date(),
-      status: 'New',
-      aiFitScore: result.score,
-      aiAnalysis: result.analysis,
-    };
+    try {
+      // Save to database
+      const newCandidate = await addCandidate({
+        name: result.candidateName,
+        email: `${result.candidateName.toLowerCase().replace(/\s+/g, '.')}@email.com`,
+        roleApplied: mockJobs[0]?.title || 'Senior Product Manager',
+        aiFitScore: result.score,
+        aiAnalysis: result.analysis,
+      });
 
-    setCandidates(prev => [newCandidate, ...prev]);
-    setMetrics(prev => ({
-      ...prev,
-      candidatesProcessed: prev.candidatesProcessed + 1,
-      pendingReview: prev.pendingReview + 1,
-    }));
+      // Update local state
+      setCandidates(prev => [newCandidate, ...prev]);
+      setMetrics(prev => ({
+        ...prev,
+        candidatesProcessed: prev.candidatesProcessed + 1,
+        pendingReview: prev.pendingReview + 1,
+      }));
+    } catch (error) {
+      console.error('Error saving candidate:', error);
+      // Fallback: add to local state only
+      const fallbackCandidate: Candidate = {
+        id: `candidate-${Date.now()}`,
+        name: result.candidateName,
+        email: `${result.candidateName.toLowerCase().replace(/\s+/g, '.')}@email.com`,
+        roleApplied: mockJobs[0]?.title || 'Senior Product Manager',
+        appliedDate: new Date(),
+        status: 'New',
+        aiFitScore: result.score,
+        aiAnalysis: result.analysis,
+      };
+      setCandidates(prev => [fallbackCandidate, ...prev]);
+    }
   };
 
   if (isLoading) {
