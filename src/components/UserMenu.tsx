@@ -10,6 +10,8 @@ interface UserMenuProps {
 export function UserMenu({ user, onLogout }: UserMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const [menuPosition, setMenuPosition] = useState({ top: 0, right: 0 });
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -33,6 +35,17 @@ export function UserMenu({ user, onLogout }: UserMenuProps) {
     return () => document.removeEventListener('keydown', handleEscape);
   }, []);
 
+  // Calculate dropdown position when opening
+  useEffect(() => {
+    if (isOpen && buttonRef.current) {
+      const rect = buttonRef.current.getBoundingClientRect();
+      setMenuPosition({
+        top: rect.bottom + 8,
+        right: window.innerWidth - rect.right,
+      });
+    }
+  }, [isOpen]);
+
   const getInitials = (name: string) => {
     return name
       .split(' ')
@@ -43,8 +56,9 @@ export function UserMenu({ user, onLogout }: UserMenuProps) {
   };
 
   return (
-    <div className="relative" ref={menuRef}>
+    <div ref={menuRef}>
       <button
+        ref={buttonRef}
         onClick={() => setIsOpen(!isOpen)}
         className="flex items-center gap-3 px-3 py-2 rounded-xl bg-white/10 hover:bg-white/20 backdrop-blur-sm transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-white/50"
         aria-expanded={isOpen}
@@ -67,9 +81,16 @@ export function UserMenu({ user, onLogout }: UserMenuProps) {
         <ChevronDown className={`w-4 h-4 text-white/70 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
       </button>
 
-      {/* Dropdown Menu */}
+      {/* Dropdown Menu - Fixed position to escape overflow:hidden */}
       {isOpen && (
-        <div className="absolute right-0 mt-3 w-64 bg-white rounded-2xl shadow-2xl border border-neutral-100 py-2 z-[9999] overflow-hidden">
+        <div 
+          className="fixed w-64 bg-white rounded-2xl shadow-2xl border border-neutral-200 py-2 overflow-hidden"
+          style={{ 
+            top: menuPosition.top, 
+            right: menuPosition.right,
+            zIndex: 99999,
+          }}
+        >
           {/* User Info */}
           <div className="px-4 py-3 bg-gradient-to-r from-purple-50 to-indigo-50 border-b border-neutral-100">
             <div className="flex items-center gap-3">
@@ -82,7 +103,7 @@ export function UserMenu({ user, onLogout }: UserMenuProps) {
               )}
               <div>
                 <p className="text-sm font-bold text-neutral-900">{user.name}</p>
-                <p className="text-xs text-neutral-500 truncate">{user.email}</p>
+                <p className="text-xs text-neutral-500 truncate max-w-[150px]">{user.email}</p>
               </div>
             </div>
           </div>
