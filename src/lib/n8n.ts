@@ -43,6 +43,7 @@ export async function analyzeResume(request: ResumeAnalysisRequest): Promise<Res
     }
 
     const data = await response.json();
+    console.log('Raw n8n response:', JSON.stringify(data, null, 2));
     return parseGeminiResponse(data, request.candidateName);
   } catch (error) {
     console.error('Error analyzing resume:', error);
@@ -53,48 +54,77 @@ export async function analyzeResume(request: ResumeAnalysisRequest): Promise<Res
 // Parse the response from Gemini via n8n
 function parseGeminiResponse(data: unknown, candidateName: string): ResumeAnalysisResponse {
   try {
+    console.log('Parsing response for:', candidateName);
     let content = '';
     
-    if (data && typeof data === 'object') {
-      const responseData = data as Record<string, unknown>;
+    // Handle array response (n8n sometimes returns array)
+    let responseData = data;
+    if (Array.isArray(data) && data.length > 0) {
+      responseData = data[0];
+      console.log('Unwrapped array response');
+    }
+    
+    if (responseData && typeof responseData === 'object') {
+      const objData = responseData as Record<string, unknown>;
       
-      // Check for Gemini API response structure
-      if (responseData.candidates && Array.isArray(responseData.candidates)) {
-        const candidates = responseData.candidates as Array<{content?: {parts?: Array<{text?: string}>}}>;
-        content = candidates[0]?.content?.parts?.[0]?.text || '';
-      }
-      // Check if n8n returned parsed JSON directly
-      else if (responseData.score !== undefined) {
+      // Check for direct score (already parsed JSON)
+      if (typeof objData.score === 'number') {
+        console.log('Found direct score:', objData.score);
         return {
-          score: responseData.score as number,
-          analysis: (responseData.analysis as string) || '',
-          strengths: (responseData.strengths as string[]) || [],
-          weaknesses: (responseData.weaknesses as string[]) || [],
-          recommendation: (responseData.recommendation as 'interview' | 'reject' | 'review') || 'review',
+          score: objData.score,
+          analysis: (objData.analysis as string) || '',
+          strengths: (objData.strengths as string[]) || [],
+          weaknesses: (objData.weaknesses as string[]) || [],
+          recommendation: (objData.recommendation as 'interview' | 'reject' | 'review') || 'review',
         };
       }
-      // Check for text field
-      else if (typeof responseData.text === 'string') {
-        content = responseData.text;
+      
+      // Check for Gemini API response structure: candidates[0].content.parts[0].text
+      if (objData.candidates && Array.isArray(objData.candidates)) {
+        const candidates = objData.candidates as Array<{content?: {parts?: Array<{text?: string}>}}>;
+        content = candidates[0]?.content?.parts?.[0]?.text || '';
+        console.log('Found Gemini candidates structure, text length:', content.length);
+      }
+      // Check for text field directly
+      else if (typeof objData.text === 'string') {
+        content = objData.text;
+        console.log('Found text field');
+      }
+      // Check for content.parts structure
+      else if (objData.content && typeof objData.content === 'object') {
+        const contentObj = objData.content as { parts?: Array<{text?: string}> };
+        content = contentObj.parts?.[0]?.text || '';
+        console.log('Found content.parts structure');
       }
     }
 
     if (content) {
-      // Clean markdown code blocks
-      content = content.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+      console.log('Raw content:', content.substring(0, 200) + '...');
       
+      // Clean markdown code blocks
+      content = content.replace(/```json\s*/gi, '').replace(/```\s*/g, '').trim();
+      
+      // Try to find JSON object in the content
       const jsonMatch = content.match(/\{[\s\S]*\}/);
       if (jsonMatch) {
-        const parsed = JSON.parse(jsonMatch[0]);
-        return {
-          score: parsed.score || 50,
-          analysis: parsed.analysis || content,
-          strengths: parsed.strengths || [],
-          weaknesses: parsed.weaknesses || [],
-          recommendation: parsed.recommendation || (parsed.score > 70 ? 'interview' : 'reject'),
-        };
+        console.log('Found JSON match');
+        try {
+          const parsed = JSON.parse(jsonMatch[0]);
+          console.log('Parsed score:', parsed.score);
+          return {
+            score: typeof parsed.score === 'number' ? parsed.score : 50,
+            analysis: parsed.analysis || content,
+            strengths: Array.isArray(parsed.strengths) ? parsed.strengths : [],
+            weaknesses: Array.isArray(parsed.weaknesses) ? parsed.weaknesses : [],
+            recommendation: parsed.recommendation || (parsed.score > 70 ? 'interview' : 'review'),
+          };
+        } catch (parseError) {
+          console.error('JSON parse error:', parseError);
+        }
       }
       
+      // If no JSON found, return the content as analysis with default score
+      console.log('No JSON found, using content as analysis');
       return {
         score: 50,
         analysis: content,
@@ -104,6 +134,7 @@ function parseGeminiResponse(data: unknown, candidateName: string): ResumeAnalys
       };
     }
 
+    console.log('No content found in response');
     return {
       score: 50,
       analysis: `Analysis completed for ${candidateName}. Please review manually.`,
