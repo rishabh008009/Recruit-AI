@@ -23,6 +23,7 @@ export interface Job {
 
 export interface DashboardMetrics {
   candidatesProcessed: number;
+  interviewsScheduled: number;
   timeSaved: number;
   pendingReview: number;
 }

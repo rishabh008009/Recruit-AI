@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Send, CheckCircle } from 'lucide-react';
+import { Send, CheckCircle, Zap, Mail } from 'lucide-react';
 import { Candidate } from '../types';
 
 interface AutoPilotActionsProps {
@@ -45,9 +45,6 @@ export function AutoPilotActions({ candidate, onActionComplete }: AutoPilotActio
   
   const actionType = isHighScore ? 'interview' : 'rejection';
   const buttonText = isHighScore ? 'Send Interview Invite' : 'Send Rejection';
-  const buttonColor = isHighScore 
-    ? 'bg-green-600 hover:bg-green-700 focus:ring-green-500' 
-    : 'bg-neutral-600 hover:bg-neutral-700 focus:ring-neutral-500';
 
   const handleSendAction = () => {
     setActionSent(true);
@@ -55,34 +52,49 @@ export function AutoPilotActions({ candidate, onActionComplete }: AutoPilotActio
   };
 
   return (
-    <div className="mt-6 border-t border-neutral-200 pt-6">
-      <h3 className="text-lg font-semibold text-neutral-900 mb-4">
-        Auto-Pilot Actions
-      </h3>
+    <div className="mt-6 border-t border-neutral-100 pt-6">
+      <div className="flex items-center gap-2 mb-4">
+        <div className="p-1.5 bg-orange-100 rounded-lg">
+          <Zap className="w-4 h-4 text-orange-600" />
+        </div>
+        <h3 className="text-lg font-bold text-neutral-900">Auto-Pilot Actions</h3>
+      </div>
       
       {actionSent ? (
-        <div className="flex items-center gap-3 p-4 bg-green-50 rounded-lg border border-green-200">
-          <CheckCircle className="w-5 h-5 text-green-600" />
-          <span className="text-green-800 font-medium">
-            {isHighScore ? 'Interview invite sent!' : 'Rejection email sent!'}
-          </span>
+        <div className="flex items-center gap-3 p-5 bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl border border-green-200">
+          <div className="p-2 bg-green-100 rounded-xl">
+            <CheckCircle className="w-6 h-6 text-green-600" />
+          </div>
+          <div>
+            <span className="text-green-800 font-bold block">
+              {isHighScore ? 'Interview invite sent!' : 'Rejection email sent!'}
+            </span>
+            <span className="text-green-600 text-sm">Email has been queued for delivery</span>
+          </div>
         </div>
       ) : (
         <>
           <div className="mb-4">
-            <label className="block text-sm font-medium text-neutral-700 mb-2">
-              Email Preview
-            </label>
+            <div className="flex items-center gap-2 mb-2">
+              <Mail className="w-4 h-4 text-neutral-500" />
+              <label className="text-sm font-semibold text-neutral-700">
+                Email Preview
+              </label>
+            </div>
             <textarea
               readOnly
               value={emailContent}
-              className="w-full h-48 p-3 text-sm text-neutral-700 bg-neutral-50 border border-neutral-200 rounded-lg resize-none focus:outline-none"
+              className="w-full h-48 p-4 text-sm text-neutral-700 bg-neutral-50 border border-neutral-200 rounded-xl resize-none focus:outline-none"
             />
           </div>
           
           <button
             onClick={handleSendAction}
-            className={`inline-flex items-center gap-2 px-4 py-2 text-white font-medium rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 ${buttonColor}`}
+            className={`inline-flex items-center gap-2 px-5 py-3 text-white font-semibold rounded-xl transition-all duration-300 shadow-lg hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-offset-2 ${
+              isHighScore 
+                ? 'bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 focus:ring-green-500 hover:shadow-green-500/25' 
+                : 'bg-gradient-to-r from-neutral-600 to-neutral-700 hover:from-neutral-700 hover:to-neutral-800 focus:ring-neutral-500 hover:shadow-neutral-500/25'
+            }`}
           >
             <Send className="w-4 h-4" />
             {buttonText}

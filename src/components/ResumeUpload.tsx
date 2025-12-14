@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { Upload, FileText, Loader2, CheckCircle, AlertCircle, X, Sparkles } from 'lucide-react';
+import { Upload, FileText, Loader2, CheckCircle, AlertCircle, X, Sparkles, Zap } from 'lucide-react';
 import { analyzeResume, extractTextFromFile, isN8nConfigured } from '../lib/n8n';
 
 interface ResumeUploadProps {
@@ -73,7 +73,6 @@ export function ResumeUpload({ jobTitle, jobDescription, onAnalysisComplete }: R
         recommendation: result.recommendation,
       });
 
-      // Reset form after success
       setTimeout(() => {
         setIsOpen(false);
         setCandidateName('');
@@ -101,43 +100,64 @@ export function ResumeUpload({ jobTitle, jobDescription, onAnalysisComplete }: R
     return (
       <button
         onClick={() => setIsOpen(true)}
-        className="inline-flex items-center gap-2 px-4 py-2 bg-primary-600 text-white font-medium rounded-lg hover:bg-primary-700 transition-colors"
+        className="group relative inline-flex items-center gap-3 px-6 py-3.5 bg-gradient-to-r from-purple-600 via-violet-600 to-indigo-600 text-white font-semibold rounded-xl hover:from-purple-700 hover:via-violet-700 hover:to-indigo-700 transition-all duration-300 shadow-lg hover:shadow-purple-500/25 hover:-translate-y-0.5 overflow-hidden"
       >
-        <Sparkles className="w-4 h-4" />
-        Analyze New Resume with AI
+        {/* Shimmer effect */}
+        <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+        
+        <div className="relative flex items-center gap-3">
+          <div className="p-1.5 bg-white/20 rounded-lg">
+            <Sparkles className="w-5 h-5" />
+          </div>
+          <span>Analyze New Resume with AI</span>
+          <Zap className="w-4 h-4 text-yellow-300" />
+        </div>
       </button>
     );
   }
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-xl shadow-xl max-w-lg w-full max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto border border-neutral-200">
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-neutral-200">
-          <h3 className="text-lg font-semibold text-neutral-900">
-            AI Resume Analysis
-          </h3>
-          <button
-            onClick={handleClose}
-            className="p-1 text-neutral-400 hover:text-neutral-600 rounded"
-          >
-            <X className="w-5 h-5" />
-          </button>
+        <div className="relative overflow-hidden bg-gradient-to-r from-purple-600 via-violet-600 to-indigo-600 p-6 rounded-t-2xl">
+          <div className="absolute inset-0 overflow-hidden">
+            <div className="absolute -top-20 -right-20 w-40 h-40 bg-white/10 rounded-full blur-2xl" />
+          </div>
+          <div className="relative flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-white/20 rounded-xl">
+                <Sparkles className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <h3 className="text-xl font-bold text-white">AI Resume Analysis</h3>
+                <p className="text-purple-200 text-sm">Powered by Google Gemini</p>
+              </div>
+            </div>
+            <button
+              onClick={handleClose}
+              className="p-2 text-white/70 hover:text-white hover:bg-white/10 rounded-xl transition-colors"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
         </div>
 
         {/* Content */}
-        <div className="p-4 space-y-4">
+        <div className="p-6 space-y-5">
           {success ? (
             <div className="flex flex-col items-center py-8">
-              <CheckCircle className="w-16 h-16 text-green-500 mb-4" />
-              <p className="text-lg font-medium text-neutral-900">Analysis Complete!</p>
-              <p className="text-neutral-600">Candidate has been added to the pipeline.</p>
+              <div className="p-4 bg-green-100 rounded-full mb-4">
+                <CheckCircle className="w-12 h-12 text-green-600" />
+              </div>
+              <p className="text-xl font-bold text-neutral-900">Analysis Complete!</p>
+              <p className="text-neutral-600 mt-1">Candidate has been added to the pipeline.</p>
             </div>
           ) : (
             <>
               {/* Candidate Name */}
               <div>
-                <label className="block text-sm font-medium text-neutral-700 mb-1">
+                <label className="block text-sm font-semibold text-neutral-700 mb-2">
                   Candidate Name
                 </label>
                 <input
@@ -145,36 +165,40 @@ export function ResumeUpload({ jobTitle, jobDescription, onAnalysisComplete }: R
                   value={candidateName}
                   onChange={(e) => setCandidateName(e.target.value)}
                   placeholder="Enter candidate's full name"
-                  className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                  className="w-full px-4 py-3 bg-neutral-50 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300"
                 />
               </div>
 
               {/* Job Info */}
-              <div className="p-3 bg-neutral-50 rounded-lg">
-                <p className="text-sm text-neutral-600">
-                  <span className="font-medium">Analyzing for:</span> {jobTitle}
+              <div className="p-4 bg-gradient-to-r from-purple-50 to-indigo-50 rounded-xl border border-purple-100">
+                <p className="text-sm text-neutral-700">
+                  <span className="font-semibold text-purple-700">Analyzing for:</span> {jobTitle}
                 </p>
               </div>
 
               {/* File Upload */}
               <div>
-                <label className="block text-sm font-medium text-neutral-700 mb-1">
+                <label className="block text-sm font-semibold text-neutral-700 mb-2">
                   Upload Resume
                 </label>
                 <div
                   onClick={() => fileInputRef.current?.click()}
-                  className="border-2 border-dashed border-neutral-300 rounded-lg p-4 text-center cursor-pointer hover:border-primary-400 transition-colors"
+                  className="border-2 border-dashed border-neutral-300 rounded-xl p-6 text-center cursor-pointer hover:border-purple-400 hover:bg-purple-50/50 transition-all duration-300 group"
                 >
                   {selectedFile ? (
-                    <div className="flex items-center justify-center gap-2 text-primary-600">
-                      <FileText className="w-5 h-5" />
-                      <span>{selectedFile.name}</span>
+                    <div className="flex items-center justify-center gap-3 text-purple-600">
+                      <div className="p-2 bg-purple-100 rounded-lg">
+                        <FileText className="w-5 h-5" />
+                      </div>
+                      <span className="font-medium">{selectedFile.name}</span>
                     </div>
                   ) : (
                     <>
-                      <Upload className="w-6 h-6 text-neutral-400 mx-auto mb-1" />
+                      <div className="p-3 bg-neutral-100 rounded-xl inline-block mb-2 group-hover:bg-purple-100 transition-colors">
+                        <Upload className="w-6 h-6 text-neutral-400 group-hover:text-purple-500 transition-colors" />
+                      </div>
                       <p className="text-sm text-neutral-600">
-                        Click to upload (.pdf or .txt)
+                        Click to upload <span className="text-purple-600 font-medium">(.pdf or .txt)</span>
                       </p>
                     </>
                   )}
@@ -190,23 +214,23 @@ export function ResumeUpload({ jobTitle, jobDescription, onAnalysisComplete }: R
 
               {/* Or paste text */}
               <div>
-                <label className="block text-sm font-medium text-neutral-700 mb-1">
+                <label className="block text-sm font-semibold text-neutral-700 mb-2">
                   Or Paste Resume Text
                 </label>
                 <textarea
                   value={resumeText}
                   onChange={(e) => setResumeText(e.target.value)}
                   placeholder="Paste the resume content here..."
-                  rows={6}
-                  className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 resize-none"
+                  rows={5}
+                  className="w-full px-4 py-3 bg-neutral-50 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 resize-none"
                 />
               </div>
 
               {/* Error */}
               {error && (
-                <div className="flex items-center gap-2 p-3 bg-red-50 text-red-700 rounded-lg">
-                  <AlertCircle className="w-4 h-4 flex-shrink-0" />
-                  <p className="text-sm">{error}</p>
+                <div className="flex items-center gap-3 p-4 bg-red-50 border border-red-200 text-red-700 rounded-xl">
+                  <AlertCircle className="w-5 h-5 flex-shrink-0" />
+                  <p className="text-sm font-medium">{error}</p>
                 </div>
               )}
 
@@ -214,23 +238,23 @@ export function ResumeUpload({ jobTitle, jobDescription, onAnalysisComplete }: R
               <div className="flex gap-3 pt-2">
                 <button
                   onClick={handleClose}
-                  className="flex-1 px-4 py-2 border border-neutral-300 text-neutral-700 font-medium rounded-lg hover:bg-neutral-50 transition-colors"
+                  className="flex-1 px-4 py-3 border border-neutral-300 text-neutral-700 font-semibold rounded-xl hover:bg-neutral-50 transition-all duration-300"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={handleAnalyze}
                   disabled={isAnalyzing}
-                  className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2 bg-primary-600 text-white font-medium rounded-lg hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-purple-600 via-violet-600 to-indigo-600 text-white font-semibold rounded-xl hover:from-purple-700 hover:via-violet-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 shadow-lg hover:shadow-purple-500/25"
                 >
                   {isAnalyzing ? (
                     <>
-                      <Loader2 className="w-4 h-4 animate-spin" />
+                      <Loader2 className="w-5 h-5 animate-spin" />
                       Analyzing...
                     </>
                   ) : (
                     <>
-                      <FileText className="w-4 h-4" />
+                      <Sparkles className="w-5 h-5" />
                       Analyze with AI
                     </>
                   )}

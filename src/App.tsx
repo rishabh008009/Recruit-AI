@@ -24,9 +24,7 @@ function App() {
   const [candidates, setCandidates] = useState<Candidate[]>(mockCandidates);
   const [metrics, setMetrics] = useState(mockMetrics);
 
-  // Check for existing session and listen to auth changes
   useEffect(() => {
-    // Get initial session
     const initAuth = async () => {
       try {
         const { session } = await auth.getSession();
@@ -47,7 +45,6 @@ function App() {
 
     initAuth();
 
-    // Listen for auth changes (handles OAuth redirects)
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
         console.log('Auth event:', event);
@@ -73,12 +70,9 @@ function App() {
     };
   }, []);
 
-  const handleLogin = () => {
-    // Auth state change listener will handle setting the user
-  };
+  const handleLogin = () => {};
 
   const handleSignUp = () => {
-    // Switch to login after successful signup
     setAuthView('login');
   };
 
@@ -103,7 +97,6 @@ function App() {
     setTimeout(() => setSelectedCandidate(null), 300);
   };
 
-  // Handle new candidate from AI analysis
   const handleNewCandidate = (result: {
     candidateName: string;
     score: number;
@@ -129,21 +122,19 @@ function App() {
     }));
   };
 
-  // Show loading state
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-neutral-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-violet-950 via-purple-900 to-indigo-950 flex items-center justify-center">
         <div className="text-center">
-          <div className="inline-flex items-center justify-center p-3 bg-primary-100 rounded-xl mb-4 animate-pulse">
-            <Sparkles className="w-8 h-8 text-primary-600" />
+          <div className="inline-flex items-center justify-center p-4 bg-white/10 backdrop-blur-xl rounded-2xl mb-4 animate-pulse shadow-glow">
+            <Sparkles className="w-10 h-10 text-white" />
           </div>
-          <p className="text-neutral-600">Loading...</p>
+          <p className="text-purple-200 font-medium">Loading...</p>
         </div>
       </div>
     );
   }
 
-  // Show auth pages if not authenticated
   if (!user) {
     if (authView === 'signup') {
       return (
@@ -161,24 +152,28 @@ function App() {
     );
   }
 
-  // Show main dashboard
   return (
     <div className="min-h-screen bg-neutral-50">
-      {/* Header */}
-      <header className="bg-white border-b border-neutral-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+      {/* Gradient Header */}
+      <header className="relative overflow-hidden bg-gradient-to-r from-violet-900 via-purple-800 to-indigo-900">
+        {/* Animated background elements */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-500/30 rounded-full blur-3xl" />
+          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-cyan-500/20 rounded-full blur-3xl" />
+        </div>
+        
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-primary-100 rounded-lg">
-                <Sparkles className="w-6 h-6 text-primary-600" />
+            <div className="flex items-center gap-4">
+              <div className="p-3 bg-white/10 backdrop-blur-xl rounded-xl shadow-glow">
+                <Sparkles className="w-7 h-7 text-white" />
               </div>
               <div>
-                <h1 className="text-xl font-bold text-neutral-900">Recruit AI</h1>
-                <p className="text-sm text-neutral-500">Intelligent Applicant Tracking</p>
+                <h1 className="text-2xl font-bold text-white">Recruit AI</h1>
+                <p className="text-sm text-purple-200">Intelligent Applicant Tracking</p>
               </div>
             </div>
             
-            {/* User Menu with Logout */}
             <UserMenu user={user} onLogout={handleLogout} />
           </div>
         </div>
@@ -187,18 +182,18 @@ function App() {
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Welcome Message */}
-        <div className="mb-6">
-          <h2 className="text-2xl font-bold text-neutral-900">
-            Welcome back, {user.name.split(' ')[0]}!
+        <div className="mb-8">
+          <h2 className="text-3xl font-bold text-neutral-900">
+            Welcome back, <span className="gradient-text">{user.name.split(' ')[0]}</span>! 👋
           </h2>
-          <p className="text-neutral-600">Here's what's happening with your recruitment pipeline.</p>
+          <p className="text-neutral-600 mt-1">Here's what's happening with your recruitment pipeline.</p>
         </div>
 
         {/* Command Center - Metrics */}
         <CommandCenter metrics={metrics} />
 
         {/* AI Resume Analysis Button */}
-        <div className="mb-6">
+        <div className="mb-8">
           <ResumeUpload
             jobTitle={mockJobs[0]?.title || 'Senior Product Manager'}
             jobDescription={mockJobs[0]?.description || 'Looking for an experienced product manager with strong technical background.'}

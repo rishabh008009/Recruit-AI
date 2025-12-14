@@ -74,6 +74,7 @@ export const mockJobs: Job[] = [
 
 export const mockMetrics: DashboardMetrics = {
   candidatesProcessed: 142,
+  interviewsScheduled: 23,
   timeSaved: 28,
   pendingReview: 5,
 };

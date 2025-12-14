@@ -11,7 +11,6 @@ export function UserMenu({ user, onLogout }: UserMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
-  // Close menu when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
@@ -23,7 +22,6 @@ export function UserMenu({ user, onLogout }: UserMenuProps) {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // Close menu on escape key
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
@@ -48,7 +46,7 @@ export function UserMenu({ user, onLogout }: UserMenuProps) {
     <div className="relative" ref={menuRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 p-1.5 rounded-lg hover:bg-neutral-100 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500"
+        className="flex items-center gap-3 px-3 py-2 rounded-xl bg-white/10 hover:bg-white/20 backdrop-blur-sm transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-white/50"
         aria-expanded={isOpen}
         aria-haspopup="true"
       >
@@ -56,40 +54,51 @@ export function UserMenu({ user, onLogout }: UserMenuProps) {
           <img
             src={user.avatar}
             alt={user.name}
-            className="w-8 h-8 rounded-full"
+            className="w-9 h-9 rounded-full ring-2 ring-white/30"
           />
         ) : (
-          <div className="w-8 h-8 rounded-full bg-primary-100 text-primary-700 flex items-center justify-center text-sm font-medium">
+          <div className="w-9 h-9 rounded-full bg-gradient-to-br from-purple-400 to-violet-500 text-white flex items-center justify-center text-sm font-bold ring-2 ring-white/30">
             {getInitials(user.name)}
           </div>
         )}
-        <span className="text-sm font-medium text-neutral-700 hidden sm:block">
+        <span className="text-sm font-semibold text-white hidden sm:block">
           {user.name}
         </span>
-        <ChevronDown className={`w-4 h-4 text-neutral-500 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+        <ChevronDown className={`w-4 h-4 text-white/70 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
       </button>
 
       {/* Dropdown Menu */}
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-lg border border-neutral-200 py-1 z-50">
+        <div className="absolute right-0 mt-3 w-64 bg-white rounded-2xl shadow-xl border border-neutral-100 py-2 z-50 overflow-hidden">
           {/* User Info */}
-          <div className="px-4 py-3 border-b border-neutral-100">
-            <p className="text-sm font-medium text-neutral-900">{user.name}</p>
-            <p className="text-xs text-neutral-500 truncate">{user.email}</p>
+          <div className="px-4 py-3 bg-gradient-to-r from-purple-50 to-indigo-50 border-b border-neutral-100">
+            <div className="flex items-center gap-3">
+              {user.avatar ? (
+                <img src={user.avatar} alt={user.name} className="w-10 h-10 rounded-full" />
+              ) : (
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-violet-600 text-white flex items-center justify-center text-sm font-bold">
+                  {getInitials(user.name)}
+                </div>
+              )}
+              <div>
+                <p className="text-sm font-bold text-neutral-900">{user.name}</p>
+                <p className="text-xs text-neutral-500 truncate">{user.email}</p>
+              </div>
+            </div>
           </div>
 
           {/* Menu Items */}
-          <div className="py-1">
+          <div className="py-2">
             <button
               onClick={() => setIsOpen(false)}
-              className="w-full flex items-center gap-3 px-4 py-2 text-sm text-neutral-700 hover:bg-neutral-50 transition-colors"
+              className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-neutral-700 hover:bg-purple-50 hover:text-purple-700 transition-colors"
             >
               <UserIcon className="w-4 h-4" />
               Profile
             </button>
             <button
               onClick={() => setIsOpen(false)}
-              className="w-full flex items-center gap-3 px-4 py-2 text-sm text-neutral-700 hover:bg-neutral-50 transition-colors"
+              className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-neutral-700 hover:bg-purple-50 hover:text-purple-700 transition-colors"
             >
               <Settings className="w-4 h-4" />
               Settings
@@ -97,13 +106,13 @@ export function UserMenu({ user, onLogout }: UserMenuProps) {
           </div>
 
           {/* Logout */}
-          <div className="border-t border-neutral-100 py-1">
+          <div className="border-t border-neutral-100 pt-2 px-2">
             <button
               onClick={() => {
                 setIsOpen(false);
                 onLogout();
               }}
-              className="w-full flex items-center gap-3 px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors"
+              className="w-full flex items-center gap-3 px-3 py-2.5 text-sm text-red-600 hover:bg-red-50 rounded-xl transition-colors font-medium"
             >
               <LogOut className="w-4 h-4" />
               Sign out
