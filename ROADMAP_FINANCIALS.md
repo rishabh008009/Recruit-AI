@@ -195,6 +195,129 @@ ROI: 6,900%
 
 ---
 
+## Tech Architecture - How It All Connects
+
+### System Overview Diagram
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                              RECRUIT AI ARCHITECTURE                         │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌──────────────┐     ┌──────────────┐     ┌──────────────┐     ┌──────────────┐
+│   FRONTEND   │     │   BACKEND    │     │  AUTOMATION  │     │     AI       │
+│  React/Vite  │────▶│   Supabase   │     │     n8n      │────▶│   Gemini     │
+│  TypeScript  │     │  PostgreSQL  │     │   Workflow   │     │   2.0 Flash  │
+│  Tailwind    │     │    Auth      │     │   Engine     │     │              │
+└──────────────┘     └──────────────┘     └──────────────┘     └──────────────┘
+       │                    │                    │                    │
+       │                    │                    │                    │
+       ▼                    ▼                    ▼                    ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                              DATA FLOW                                       │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+  User uploads    ──▶  Frontend sends   ──▶  n8n receives   ──▶  Gemini analyzes
+  resume + info        to n8n webhook        & calls Gemini       returns score
+
+                                    ▼
+
+  Dashboard shows  ◀──  Supabase stores  ◀──  n8n returns    ◀──  AI response
+  candidate score       candidate data        score + sends       with fit %
+                                              email
+```
+
+### Component Breakdown
+
+| Layer | Technology | Purpose |
+|-------|------------|---------|
+| **Frontend** | React + TypeScript + Vite | User interface, forms, dashboard |
+| **Styling** | Tailwind CSS | Glassmorphism UI, responsive design |
+| **Auth** | Supabase Auth | Email/password + Google OAuth |
+| **Database** | Supabase PostgreSQL | Store candidates, users, jobs |
+| **Automation** | n8n Cloud | Workflow orchestration, webhooks |
+| **AI Engine** | Google Gemini 2.0 Flash | Resume analysis, scoring |
+| **Email** | Gmail via n8n | Automated interview/rejection emails |
+| **Hosting** | Vercel | Frontend deployment, CDN |
+
+### Request Flow (Step by Step)
+
+```
+1. USER ACTION
+   └── Recruiter uploads resume + enters candidate info
+
+2. FRONTEND → n8n
+   └── POST request to n8n webhook with:
+       • candidateName
+       • candidateEmail  
+       • resumeText
+       • jobTitle
+       • jobDescription
+
+3. n8n → GEMINI AI
+   └── HTTP Request to Gemini API with prompt:
+       "Analyze this resume for [job]. Return JSON with score 0-100"
+
+4. GEMINI → n8n (Response)
+   └── Returns JSON:
+       {
+         "score": 85,
+         "analysis": "Strong match...",
+         "strengths": ["5 years experience", "React expert"],
+         "weaknesses": ["No Python"],
+         "recommendation": "interview"
+       }
+
+5. n8n PARALLEL ACTIONS (Y-Shape)
+   ├── Branch A: Respond to Webhook → Returns score to frontend
+   └── Branch B: Gmail → Sends interview/rejection email
+
+6. FRONTEND RECEIVES
+   └── Displays AI score, adds candidate to dashboard
+
+7. SUPABASE STORES
+   └── Candidate saved to PostgreSQL database
+```
+
+### API Endpoints
+
+| Endpoint | Method | Purpose |
+|----------|--------|---------|
+| `/webhook/analyze-resume` | POST | n8n webhook for AI analysis |
+| `/auth/v1/signup` | POST | Supabase user registration |
+| `/auth/v1/token` | POST | Supabase login |
+| `/rest/v1/candidates` | GET/POST | CRUD operations |
+
+### Security Architecture
+
+```
+┌─────────────────────────────────────────────────────────┐
+│                    SECURITY LAYERS                       │
+├─────────────────────────────────────────────────────────┤
+│  1. Supabase Auth     │ JWT tokens, session management  │
+│  2. Row Level Security│ Users see only their data       │
+│  3. Environment Vars  │ API keys never in code          │
+│  4. HTTPS             │ All traffic encrypted           │
+│  5. OAuth 2.0         │ Google sign-in security         │
+└─────────────────────────────────────────────────────────┘
+```
+
+### Tech Stack Summary (For Presentation Slide)
+
+```
+┌────────────────────────────────────────────────────────────┐
+│                    RECRUIT AI TECH STACK                    │
+├────────────────────────────────────────────────────────────┤
+│  🎨 FRONTEND        │  React + TypeScript + Tailwind       │
+│  🔐 AUTH            │  Supabase (Email + Google OAuth)     │
+│  🗄️ DATABASE        │  Supabase PostgreSQL                 │
+│  🤖 AI              │  Google Gemini 2.0 Flash Lite        │
+│  ⚡ AUTOMATION      │  n8n Cloud (Webhooks + Gmail)        │
+│  🚀 HOSTING         │  Vercel (Frontend) + Supabase Cloud  │
+└────────────────────────────────────────────────────────────┘
+```
+
+---
+
 ## Competitive Advantage
 
 1. **AI-First Approach**: Built with Gemini AI from day one, not bolted on
