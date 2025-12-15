@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recruit AI - Dashboard Wireframe</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+    body { background: #f5f5f5; padding: 20px; }
+    .wireframe { max-width: 1200px; margin: 0 auto; background: white; border: 2px dashed #999; border-radius: 8px; }
+    .header { background: #e0e0e0; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px dashed #999; }
+    .logo { display: flex; align-items: center; gap: 12px; }
+    .logo-icon { width: 40px; height: 40px; background: #bbb; border-radius: 8px; }
+    .logo-text { font-weight: bold; color: #666; }
+    .user-menu { display: flex; align-items: center; gap: 8px; }
+    .avatar { width: 36px; height: 36px; background: #bbb; border-radius: 50%; }
+    .content { padding: 24px; }
+    .welcome { margin-bottom: 24px; }
+    .welcome h1 { color: #666; font-size: 28px; }
+    .welcome p { color: #999; }
+    .metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+    .metric-card { background: #f0f0f0; border: 2px dashed #ccc; border-radius: 12px; padding: 20px; }
+    .metric-label { color: #999; font-size: 12px; margin-bottom: 8px; }
+    .metric-value { color: #666; font-size: 32px; font-weight: bold; }
+    .cta-button { background: #d0d0d0; border: 2px dashed #999; padding: 14px 24px; border-radius: 12px; color: #666; font-weight: bold; margin-bottom: 24px; display: inline-block; }
+    .section-title { color: #666; font-size: 18px; font-weight: bold; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+    .jobs-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 32px; }
+    .job-card { background: #f8f8f8; border: 2px dashed #ccc; border-radius: 12px; padding: 20px; }
+    .job-title { color: #666; font-weight: bold; margin-bottom: 4px; }
+    .job-dept { color: #999; font-size: 14px; margin-bottom: 12px; }
+    .job-stats { display: flex; gap: 24px; }
+    .job-stat { color: #888; font-size: 14px; }
+    .table-container { background: #f8f8f8; border: 2px dashed #ccc; border-radius: 12px; overflow: hidden; }
+    .table-header { display: grid; grid-template-columns: 2fr 2fr 1fr 1fr 1fr; padding: 12px 20px; background: #e8e8e8; border-bottom: 2px dashed #ccc; }
+    .table-header span { color: #888; font-size: 12px; font-weight: bold; text-transform: uppercase; }
+    .table-row { display: grid; grid-template-columns: 2fr 2fr 1fr 1fr 1fr; padding: 16px 20px; border-bottom: 1px dashed #ddd; align-items: center; }
+    .candidate-info { display: flex; align-items: center; gap: 12px; }
+    .candidate-avatar { width: 40px; height: 40px; background: #ccc; border-radius: 50%; }
+    .candidate-name { color: #666; font-weight: 500; }
+    .candidate-email { color: #999; font-size: 12px; }
+    .status-badge { background: #d0d0d0; padding: 4px 12px; border-radius: 20px; font-size: 12px; color: #666; display: inline-block; }
+    .score { font-weight: bold; }
+    .score.high { color: #4a4; }
+    .score.medium { color: #a84; }
+    .score.low { color: #a44; }
+    .annotation { position: absolute; background: #ffeb3b; padding: 4px 8px; font-size: 11px; border-radius: 4px; transform: rotate(-3deg); }
+  </style>
+</head>
+<body>
+  <div class="wireframe">
+    <div class="header">
+      <div class="logo">
+        <div class="logo-icon"></div>
+        <div class="logo-text">Recruit AI<br><span style="font-weight:normal;font-size:12px;color:#999">Intelligent Applicant Tracking</span></div>
+      </div>
+      <div class="user-menu">
+        <span style="color:#666">Rishabh Singh</span>
+        <div class="avatar"></div>
+      </div>
+    </div>
+    <div class="content">
+      <div class="welcome">
+        <h1>Welcome back, Rishabh! 👋</h1>
+        <p>Here's what's happening with your recruitment pipeline.</p>
+      </div>
+      <div class="metrics">
+        <div class="metric-card">
+          <div class="metric-label">Candidates Processed</div>
+          <div class="metric-value">5</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Interviews Scheduled</div>
+          <div class="metric-value">0</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Time Saved</div>
+          <div class="metric-value">1 hrs</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Pending Review</div>
+          <div class="metric-value">5</div>
+        </div>
+      </div>
+      <div class="cta-button">✨ Analyze New Resume with AI ⚡</div>
+      <div class="section-title">🏢 Active Jobs</div>
+      <div class="jobs-grid">
+        <div class="job-card">
+          <div class="job-title">Senior Product Manager</div>
+          <div class="job-dept">Product</div>
+          <div class="job-stats">
+            <span class="job-stat">2 Openings</span>
+            <span class="job-stat">45 Applicants</span>
+          </div>
+        </div>
+        <div class="job-card">
+          <div class="job-title">Full Stack Engineer</div>
+          <div class="job-dept">Engineering</div>
+          <div class="job-stats">
+            <span class="job-stat">3 Openings</span>
+            <span class="job-stat">97 Applicants</span>
+          </div>
+        </div>
+      </div>
+      <div class="section-title">👥 Candidates Pipeline</div>
+      <div class="table-container">
+        <div class="table-header">
+          <span>Candidate</span>
+          <span>Role Applied</span>
+          <span>Applied Date</span>
+          <span>Status</span>
+          <span>AI Fit Score</span>
+        </div>
+        <div class="table-row">
+          <div class="candidate-info">
+            <div class="candidate-avatar"></div>
+            <div><div class="candidate-name">John Smith</div><div class="candidate-email">john.smith@email.com</div></div>
+          </div>
+          <div style="color:#666">Senior Product Manager</div>
+          <div style="color:#888">Dec 14, 2025</div>
+          <div><span class="status-badge">New</span></div>
+          <div class="score high">● 90%</div>
+        </div>
+        <div class="table-row">
+          <div class="candidate-info">
+            <div class="candidate-avatar"></div>
+            <div><div class="candidate-name">Rhea Sharma</div><div class="candidate-email">rhea.sharma@email.com</div></div>
+          </div>
+          <div style="color:#666">Senior Product Manager</div>
+          <div style="color:#888">Dec 14, 2025</div>
+          <div><span class="status-badge">New</span></div>
+          <div class="score medium">● 50%</div>
+        </div>
+        <div class="table-row">
+          <div class="candidate-info">
+            <div class="candidate-avatar"></div>
+            <div><div class="candidate-name">Rishabh Singh</div><div class="candidate-email">rishabh@email.com</div></div>
+          </div>
+          <div style="color:#666">Senior Product Manager</div>
+          <div style="color:#888">Dec 14, 2025</div>
+          <div><span class="status-badge">New</span></div>
+          <div class="score low">● 10%</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

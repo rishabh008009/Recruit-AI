@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recruit AI - Candidate Detail Wireframe</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+    body { background: #e0e0e0; min-height: 100vh; display: flex; justify-content: flex-end; }
+    .backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.3); }
+    .panel { position: relative; width: 100%; max-width: 480px; background: white; border: 2px dashed #999; min-height: 100vh; z-index: 10; }
+    .panel-header { background: #d0d0d0; padding: 24px; border-bottom: 2px dashed #999; }
+    .header-top { display: flex; justify-content: space-between; align-items: flex-start; }
+    .candidate-info { display: flex; gap: 16px; align-items: center; }
+    .avatar { width: 56px; height: 56px; background: #bbb; border-radius: 12px; }
+    .candidate-name { color: #555; font-size: 20px; font-weight: bold; }
+    .candidate-role { color: #888; font-size: 14px; }
+    .close-btn { width: 32px; height: 32px; background: #c0c0c0; border-radius: 8px; border: none; color: #666; cursor: pointer; }
+    .panel-content { padding: 24px; }
+    .score-section { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; }
+    .score-badge { width: 64px; height: 64px; background: #4a4; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 18px; }
+    .score-badge.low { background: #a44; }
+    .score-badge.medium { background: #a84; }
+    .score-insight { flex: 1; background: #e8f5e9; border: 2px dashed #4a4; border-radius: 8px; padding: 10px 14px; color: #2e7d32; font-size: 13px; }
+    .score-insight.low { background: #ffebee; border-color: #a44; color: #c62828; }
+    .status-badge { display: inline-block; background: #d0d0d0; padding: 6px 16px; border-radius: 20px; font-size: 13px; color: #666; margin-bottom: 20px; }
+    .detail-grid { display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
+    .detail-item { display: flex; align-items: center; gap: 12px; background: #f5f5f5; padding: 12px 16px; border-radius: 10px; border: 1px dashed #ddd; }
+    .detail-icon { width: 32px; height: 32px; background: #e0e0e0; border-radius: 8px; }
+    .detail-text { color: #666; font-size: 14px; }
+    .section-title { display: flex; align-items: center; gap: 8px; color: #555; font-weight: bold; margin-bottom: 12px; }
+    .section-icon { width: 24px; height: 24px; background: #e0e0e0; border-radius: 6px; }
+    .analysis-box { background: #f8f8f8; border: 2px dashed #ccc; border-radius: 12px; padding: 16px; margin-bottom: 24px; }
+    .analysis-text { color: #666; font-size: 14px; line-height: 1.6; }
+    .action-section { border-top: 2px dashed #ddd; padding-top: 20px; }
+    .email-preview { background: #f5f5f5; border: 2px dashed #ccc; border-radius: 8px; padding: 14px; margin-bottom: 16px; }
+    .email-label { color: #888; font-size: 12px; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+    .email-content { color: #666; font-size: 13px; line-height: 1.5; }
+    .btn-action { width: 100%; padding: 14px; background: #4a4; border: none; border-radius: 10px; color: white; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .btn-action.reject { background: #888; }
+  </style>
+</head>
+<body>
+  <div class="backdrop"></div>
+  <div class="panel">
+    <div class="panel-header">
+      <div class="header-top">
+        <div class="candidate-info">
+          <div class="avatar"></div>
+          <div>
+            <div class="candidate-name">John Smith</div>
+            <div class="candidate-role">Senior Product Manager</div>
+          </div>
+        </div>
+        <button class="close-btn">✕</button>
+      </div>
+    </div>
+    <div class="panel-content">
+      <div class="score-section">
+        <div class="score-badge">90%</div>
+        <div class="score-insight">✓ Strong Match - Recommended for Interview</div>
+      </div>
+      <div class="status-badge">New</div>
+      <div class="detail-grid">
+        <div class="detail-item">
+          <div class="detail-icon"></div>
+          <div class="detail-text">john.smith@email.com</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-icon"></div>
+          <div class="detail-text">Applied Dec 14, 2025</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-icon"></div>
+          <div class="detail-text">Senior Product Manager</div>
+        </div>
+      </div>
+      <div class="section-title">
+        <div class="section-icon"></div>
+        AI Analysis
+      </div>
+      <div class="analysis-box">
+        <p class="analysis-text">John Smith is a strong candidate for the Senior Product Manager role. He possesses 8+ years of relevant experience, exceeding the 5-year requirement. His resume highlights a strong track record of success in B2B and B2C SaaS environments, as well as a clear understanding of roadmap planning, stakeholder management, and data-driven decision making.</p>
+      </div>
+      <div class="action-section">
+        <div class="section-title">
+          <div class="section-icon"></div>
+          Auto-Pilot Actions
+        </div>
+        <div class="email-preview">
+          <div class="email-label">📧 Email Preview</div>
+          <div class="email-content">
+            Hi John Smith,<br><br>
+            Thank you for applying for the Senior Product Manager position at Recruit AI. We were impressed by your background and would love to learn more about your experience.<br><br>
+            We'd like to invite you to an interview...
+          </div>
+        </div>
+        <button class="btn-action">✈ Send Interview Invite</button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
