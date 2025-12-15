@@ -1,91 +1,132 @@
-# SubSentry - Subscription Tracker
+# Recruit AI - AI-Powered Resume Screening
 
-A calm, supportive web app that helps users track recurring subscriptions and stay in control of their spending.
+An intelligent recruitment dashboard that uses Google Gemini AI to analyze resumes and automate candidate screening.
 
 ## 🎯 Product Overview
 
-SubSentry is designed for people like Priya, a 32-year-old freelance designer who wants financial control without the stress. The app provides a single dashboard to manually log all recurring subscriptions (Netflix, gym, software) and sends alerts before renewals.
+Recruit AI helps recruiters save 90% of their screening time by automatically analyzing resumes against job descriptions. The AI provides fit scores (0-100%), identifies strengths/weaknesses, and sends automated interview invites or rejection emails.
 
-## 🖥️ Front-End Screens
-
-The Lovable front-end includes 7 fully functional screens covering login, dashboard, subscription creation, detail views, reminders, and settings. The UI uses a white base with light blue accents and Inter typography, emphasizing simplicity and confidence. The navigation is seamless, enabling key actions within 3 clicks.
-
-### Screens Included:
-1. **Login/Signup** - Google authentication with email fallback
-2. **Dashboard** - Overview of all subscriptions with spending stats
-3. **Create Subscription** - Form to add new recurring payments
-4. **Subscription Detail** - Detailed view with annual cost calculations
-5. **Reminder Setup** - Schedule notifications before billing
-6. **Confirmation** - Success feedback after actions
-7. **Settings/Profile** - Manage preferences and notifications
-
-## 🎨 Design System
-
-- **Color Palette**: White base, light blue (#4A90E2) accents, minimal icons
-- **Typography**: Inter Sans with consistent hierarchy (H1: 32px, H2: 24px, Body: 14px+)
-- **UI Style**: Clean card layout, rounded corners (12-16px), gentle shadows, accessible contrast (4.5:1)
-- **Brand Tone**: Calm, Supportive, Empowering
-
-## 🚀 Getting Started
-
-### Front-End Only (Quick Demo)
-1. Open `index.html` in a modern web browser
-2. Explore the UI with sample data
-3. All screens are functional with mock data
-
-### Full-Stack (With Backend)
-1. **Set up Supabase backend** (15 min) - See `QUICK_START_BACKEND.md`
-2. **Configure Google OAuth** - Follow `BACKEND_SETUP.md`
-3. **Connect front-end** - Update `lib/supabase-client.js` with your credentials
-4. **Deploy** - Push to GitHub Pages or Vercel
-
-**Quick Backend Setup**: See `QUICK_START_BACKEND.md` for 15-minute setup guide
+**Live Demo:** [https://recruit-ai-sooty.vercel.app](https://recruit-ai-sooty.vercel.app)
 
 ## ✨ Key Features
 
-- **Interactive Dashboard**: View total monthly spending and subscription status at a glance
-- **Smart Categorization**: Active, Due Soon, and Overdue subscriptions clearly labeled
-- **Reminder System**: Set custom notifications 1-14 days before billing
-- **Responsive Design**: Works seamlessly on desktop and mobile devices
-- **Accessible**: Keyboard navigation, proper contrast ratios, descriptive labels
+- **AI Resume Analysis**: Upload a resume and get instant AI-powered fit scoring using Google Gemini
+- **Candidate Pipeline Dashboard**: Track all candidates with color-coded AI scores
+- **Automated Emails**: Interview invites (score ≥70%) or rejection emails sent automatically
+- **User Authentication**: Email/password + Google OAuth via Supabase
+- **Database Persistence**: All candidates stored in Supabase PostgreSQL
+- **Modern UI**: Glassmorphism design with gradient backgrounds
 
-## 🔄 Navigation Flow
+## 🖥️ Screens
+
+1. **Login/Signup** - Email + Google OAuth authentication
+2. **Dashboard** - Command center with metrics, active jobs, and candidate pipeline
+3. **Resume Upload** - AI-powered resume analysis modal
+4. **Candidate Detail** - Slide-over with AI analysis, strengths, weaknesses, and actions
+
+## 🛠️ Tech Stack
+
+- **Frontend**: React + TypeScript + Vite + Tailwind CSS
+- **Backend**: Supabase (Auth + PostgreSQL)
+- **AI**: Google Gemini 2.0 Flash Lite via n8n
+- **Automation**: n8n workflows for AI analysis + email sending
+- **Deployment**: Vercel
+
+## 🚀 Getting Started
+
+### Prerequisites
+- Node.js 18+
+- Supabase account
+- n8n Cloud account
+- Google Cloud Console (for Gemini API)
+
+### Installation
+
+```bash
+# Clone the repo
+git clone https://github.com/rishabh008009/Recruit-AI.git
+cd Recruit-AI
+
+# Install dependencies
+npm install
+
+# Set up environment variables
+cp .env.example .env.local
+# Edit .env.local with your credentials
+
+# Run development server
+npm run dev
+```
+
+### Environment Variables
+
+```env
+VITE_SUPABASE_URL=your_supabase_url
+VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+VITE_N8N_WEBHOOK_URL=your_n8n_webhook_url
+```
+
+## 🔄 n8n Workflow Architecture
 
 ```
-Login → Dashboard → [Add Subscription | View Details | Set Reminder] → Confirmation → Dashboard
-                  ↓
-              Settings (accessible from sidebar)
+Website → n8n Webhook → Gemini AI Analysis
+                              ↓
+              ┌───────────────┴───────────────┐
+              ↓                               ↓
+    Respond to Webhook              Gmail (Auto Email)
+    (Returns AI Score)              (Interview/Rejection)
 ```
 
-## 📱 Responsive & Accessible
+**Key Configuration:**
+- Y-shape workflow: HTTP Request splits to both response AND email
+- Gmail has "Continue on Error" enabled
+- Conditional email based on AI score (≥70% = interview, <70% = rejection)
 
-- Minimum font size: 14px
-- Button contrast: ≥ 4.5:1
-- Tab and keyboard navigation friendly
-- Descriptive alt text for all icons
-- Mobile-optimized layouts
+## 📊 AI Scoring
 
-## 🛠️ Technical Stack
+| Score | Color | Recommendation |
+|-------|-------|----------------|
+| 80-100% | Green | Interview |
+| 60-79% | Yellow | Review |
+| 0-59% | Red | Reject |
 
-### Front-End
-- Pure HTML5, CSS3, and Vanilla JavaScript
-- No dependencies or build tools required
-- Smooth transitions and animations
-- Responsive design (mobile, tablet, desktop)
+## 📁 Project Structure
 
-### Backend (Optional)
-- **Supabase**: PostgreSQL database + Auth + Edge Functions
-- **Google OAuth**: Gmail-based authentication
-- **Row Level Security**: Complete data isolation
-- **Real-time**: Live updates across devices
-- **Email Service**: Resend/Gmail/SendGrid for reminders
+```
+src/
+├── components/
+│   ├── LoginPage.tsx
+│   ├── SignUpPage.tsx
+│   ├── ResumeUpload.tsx
+│   ├── CandidateTable.tsx
+│   ├── CandidateDetailView.tsx
+│   └── ...
+├── lib/
+│   ├── supabase.ts
+│   ├── n8n.ts
+│   └── candidates.ts
+├── types/
+│   └── index.ts
+└── App.tsx
+```
 
-**See `BACKEND_SUMMARY.md` for complete backend documentation**
+## 📈 Roadmap
 
-## 💡 Key Takeaway
+See [ROADMAP_FINANCIALS.md](./ROADMAP_FINANCIALS.md) for:
+- 6-month feature roadmap
+- 5-year financial projections
+- Pricing tiers and market analysis
 
-Users should feel **empowered and in control** — tracking subscriptions becomes effortless, not stressful.
+## 🔒 Security
+
+- Row Level Security (RLS) enabled on Supabase
+- Environment variables for all sensitive data
+- Google OAuth for secure authentication
+
+## 📄 License
+
+MIT License
 
 ---
 
-Built with care for people who deserve financial peace of mind.
+Built with ❤️ using React, Supabase, n8n, and Google Gemini AI
