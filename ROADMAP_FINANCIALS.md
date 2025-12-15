@@ -140,6 +140,61 @@
 
 ---
 
+## Success Metrics - How We Measure Impact
+
+### Efficiency Metrics
+| Metric | Before Recruit AI | With Recruit AI | Improvement |
+|--------|-------------------|-----------------|-------------|
+| Time to screen 1 resume | 15-30 minutes | <5 seconds | 99% faster |
+| Resumes screened per day | 20-40 | 500+ | 12x increase |
+| Time-to-hire | 45 days | 25 days | 44% reduction |
+| Cost per hire | $4,000 | $1,500 | 62% savings |
+
+### Quality Metrics
+| Metric | Target | How We Measure |
+|--------|--------|----------------|
+| AI Score Accuracy | >85% | Compare AI scores vs final hire performance |
+| Interview-to-Offer Rate | >40% | % of interviewed candidates who receive offers |
+| Candidate Quality Score | >75% | Hiring manager satisfaction ratings |
+| False Positive Rate | <15% | Candidates scored high but rejected after interview |
+
+### Business Metrics
+| Metric | Year 1 Target | Year 3 Target |
+|--------|---------------|---------------|
+| Monthly Active Users (MAU) | 500 | 5,000 |
+| Resumes Processed/Month | 25,000 | 500,000 |
+| Customer Retention Rate | 85% | 95% |
+| Net Promoter Score (NPS) | 40+ | 60+ |
+| Average Revenue Per User (ARPU) | $100/mo | $150/mo |
+
+### User Engagement Metrics
+| Metric | Definition | Target |
+|--------|------------|--------|
+| Daily Active Users | Users who log in daily | 30% of MAU |
+| Feature Adoption | % using AI analysis | >90% |
+| Automation Rate | % of emails sent automatically | >70% |
+| Dashboard Usage | Avg. time on dashboard | 15+ min/day |
+
+### ROI Calculator for Customers
+```
+Traditional Hiring Cost:
+- Recruiter salary: $60,000/year
+- Time per hire: 20 hours @ $30/hr = $600
+- Job board fees: $300/posting
+- Total per hire: ~$4,000
+
+With Recruit AI:
+- Subscription: $149/month = $1,788/year
+- Time per hire: 2 hours @ $30/hr = $60
+- AI screening: Included
+- Total per hire: ~$1,500
+
+Annual Savings (50 hires): $125,000
+ROI: 6,900%
+```
+
+---
+
 ## Competitive Advantage
 
 1. **AI-First Approach**: Built with Gemini AI from day one, not bolted on
