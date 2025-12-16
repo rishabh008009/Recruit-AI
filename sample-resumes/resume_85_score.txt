@@ -1,0 +1,67 @@
+RAHUL KRISHNAN
+Email: rahul.krishnan@email.com | Phone: +91 99887 76655 | GitHub: github.com/rahulkrishnan
+LinkedIn: linkedin.com/in/rahulkrishnan | Portfolio: rahulkrishnan.dev
+
+SUMMARY
+Full Stack Engineer with 4+ years of experience building scalable web applications using React, TypeScript, Node.js, and PostgreSQL. Strong background in agile development, system design, and cloud deployments. Passionate about clean code and performance optimization.
+
+EXPERIENCE
+
+Full Stack Engineer | InnovateTech Pvt Ltd, Bangalore
+March 2022 - Present (2.5 years)
+- Built and maintained React/TypeScript frontend serving 50,000+ daily active users
+- Developed RESTful APIs using Node.js and Express with PostgreSQL database
+- Implemented CI/CD pipelines using GitHub Actions, reducing deployment time by 60%
+- Collaborated with product team in agile sprints, consistently delivering features on time
+- Optimized database queries resulting in 40% improvement in API response times
+- Mentored 2 junior developers on React best practices and code reviews
+
+Software Developer | CloudSoft Solutions, Hyderabad
+July 2020 - February 2022 (1.5 years)
+- Developed full-stack features using React, Node.js, and MongoDB
+- Built real-time notification system using WebSockets
+- Participated in system design discussions for microservices architecture
+- Wrote unit tests achieving 75% code coverage
+- Deployed applications on AWS EC2 and managed S3 buckets
+
+EDUCATION
+
+Bachelor of Engineering in Computer Science
+BITS Pilani, 2020
+CGPA: 8.2/10
+
+TECHNICAL SKILLS
+
+Frontend: React, TypeScript, JavaScript (ES6+), Redux, Tailwind CSS, HTML5, CSS3
+Backend: Node.js, Express.js, REST APIs, GraphQL (basic)
+Database: PostgreSQL, MongoDB, Redis (caching)
+Cloud: AWS (EC2, S3, RDS), basic Docker
+DevOps: Git, GitHub Actions, CI/CD pipelines, Linux
+Testing: Jest, React Testing Library, Postman
+Methodologies: Agile/Scrum, Code Reviews, TDD
+
+PROJECTS
+
+E-Commerce Platform (Personal Project)
+- Full-stack e-commerce app with React, Node.js, PostgreSQL
+- Implemented user authentication, product catalog, shopping cart
+- Deployed on AWS with CI/CD pipeline
+- GitHub: 150+ stars
+
+Real-time Chat Application
+- Built using React, Socket.io, and Node.js
+- Supports private messaging and group chats
+- Handles 1000+ concurrent connections
+
+CERTIFICATIONS
+- AWS Certified Cloud Practitioner (2023)
+- MongoDB Developer Certification (2022)
+
+ACHIEVEMENTS
+- Hackathon Winner: TechFest 2021 - Built AI-powered code review tool
+- Speaker: Local React meetup on "Performance Optimization in React"
+
+LANGUAGES
+- English (Fluent)
+- Hindi (Native)
+- Tamil (Conversational)

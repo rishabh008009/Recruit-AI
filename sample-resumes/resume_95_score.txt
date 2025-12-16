@@ -1,0 +1,83 @@
+ANIKA SHARMA
+Email: anika.sharma@email.com | Phone: +91 98765 12345 | GitHub: github.com/anikasharma
+LinkedIn: linkedin.com/in/anikasharma | Portfolio: anikasharma.io
+
+SUMMARY
+Senior Full Stack Engineer with 6+ years of experience architecting and building high-performance web applications at scale. Expert in React, TypeScript, Node.js, and PostgreSQL with deep AWS cloud experience. Led engineering teams, designed microservices handling 2M+ daily requests, and established CI/CD best practices. AWS Solutions Architect certified with strong system design skills.
+
+EXPERIENCE
+
+Senior Full Stack Engineer | Flipkart, Bangalore
+January 2022 - Present (3 years)
+- Lead engineer for checkout platform serving 2M+ daily transactions
+- Architected microservices using Node.js, TypeScript, and PostgreSQL
+- Built React/TypeScript frontend with 99.9% uptime and <200ms load times
+- Designed and implemented CI/CD pipelines using GitHub Actions and AWS CodePipeline
+- Reduced infrastructure costs by 35% through performance optimization and caching strategies
+- Mentored team of 5 engineers, conducted code reviews, and established coding standards
+- Implemented real-time inventory system using Redis and WebSockets
+- Led migration from monolith to microservices architecture
+
+Full Stack Engineer | Razorpay, Bangalore
+June 2019 - December 2021 (2.5 years)
+- Built payment dashboard used by 100,000+ merchants
+- Developed RESTful and GraphQL APIs with Node.js and PostgreSQL
+- Implemented comprehensive test suites achieving 90% code coverage
+- Deployed and managed applications on AWS (EC2, RDS, S3, Lambda, CloudFront)
+- Optimized database queries reducing API latency by 50%
+- Participated in on-call rotation and incident response
+
+Software Engineer | Zoho Corporation, Chennai
+July 2018 - May 2019 (1 year)
+- Developed full-stack features for CRM product using React and Java
+- Built reusable component library used across 5 product teams
+- Collaborated in agile sprints with cross-functional teams
+
+EDUCATION
+
+Bachelor of Technology in Computer Science
+IIT Delhi, 2018
+CGPA: 9.1/10 (Gold Medalist)
+
+TECHNICAL SKILLS
+
+Frontend: React, TypeScript, JavaScript (ES6+), Next.js, Redux, Tailwind CSS, Webpack
+Backend: Node.js, Express.js, NestJS, REST APIs, GraphQL, Microservices
+Database: PostgreSQL, MongoDB, Redis, Elasticsearch
+Cloud & DevOps: AWS (EC2, RDS, S3, Lambda, CloudFront, ECS), Docker, Kubernetes, Terraform
+CI/CD: GitHub Actions, Jenkins, AWS CodePipeline, ArgoCD
+Testing: Jest, Cypress, React Testing Library, k6 (load testing)
+Monitoring: Datadog, New Relic, CloudWatch, Grafana
+Methodologies: Agile/Scrum, TDD, System Design, Technical Leadership
+
+CERTIFICATIONS
+- AWS Solutions Architect Associate (2023)
+- AWS Certified Developer Associate (2022)
+- MongoDB Professional Developer (2021)
+
+PROJECTS & OPEN SOURCE
+
+react-performance-toolkit (npm package)
+- Published npm package for React performance optimization
+- 2,500+ weekly downloads, 500+ GitHub stars
+- Featured in React Newsletter
+
+Distributed Task Queue System
+- Built scalable task queue using Node.js, Redis, and PostgreSQL
+- Handles 100,000+ jobs per hour with fault tolerance
+- Open-sourced with comprehensive documentation
+
+ACHIEVEMENTS
+- Promoted to Senior Engineer in 18 months at Flipkart
+- Speaker: JSConf India 2023 - "Building Scalable React Applications"
+- Technical Blog: 50,000+ monthly readers on Medium
+- Hackathon: Winner of Flipkart Grid 3.0 (2022)
+- Patent: Co-inventor on payment fraud detection system (pending)
+
+PUBLICATIONS
+- "Microservices at Scale: Lessons from Flipkart" - Medium (10K+ reads)
+- "Optimizing PostgreSQL for High-Traffic Applications" - Dev.to
+
+LANGUAGES
+- English (Fluent)
+- Hindi (Native)

@@ -1,0 +1,53 @@
+PRIYA PATEL
+Email: priya.patel@email.com | Phone: +91 98765 43210 | LinkedIn: linkedin.com/in/priyapatel
+
+SUMMARY
+Junior Full Stack Developer with 2 years of experience building web applications. Familiar with React and Node.js. Looking to grow my skills in a challenging environment.
+
+EXPERIENCE
+
+Software Developer | TechStart Solutions, Bangalore
+June 2023 - Present (1.5 years)
+- Developed frontend components using React and JavaScript
+- Built REST APIs using Node.js and Express
+- Worked with MySQL database for data storage
+- Participated in daily standups and sprint planning
+- Fixed bugs and implemented minor features
+
+Junior Developer | WebCraft Agency, Pune
+January 2022 - May 2023 (1.5 years)
+- Created responsive websites using HTML, CSS, JavaScript
+- Learned React basics and built simple components
+- Assisted senior developers with backend tasks
+- Used Git for version control
+
+EDUCATION
+
+Bachelor of Technology in Computer Science
+Pune University, 2021
+CGPA: 7.5/10
+
+TECHNICAL SKILLS
+
+Frontend: HTML, CSS, JavaScript, React (basic), Bootstrap
+Backend: Node.js, Express (learning)
+Database: MySQL, basic MongoDB
+Tools: Git, VS Code, Postman
+Other: Basic understanding of REST APIs
+
+PROJECTS
+
+Personal Portfolio Website
+- Built a responsive portfolio using React
+- Deployed on Netlify
+
+Todo Application
+- Simple CRUD app with React frontend and Node.js backend
+- Used local storage for data persistence
+
+CERTIFICATIONS
+- Udemy: Complete Web Development Bootcamp (2022)
+
+LANGUAGES
+- English (Professional)
+- Hindi (Native)
