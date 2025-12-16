@@ -1,0 +1,81 @@
+ARJUN MEHTA
+Email: arjun.mehta@email.com | Phone: +91 98765 67890 | LinkedIn: linkedin.com/in/arjunmehta
+Portfolio: arjunmehta.pm | Twitter: @arjunpm
+
+SUMMARY
+Senior Product Manager with 7+ years of experience leading B2B SaaS products from 0-to-1 and scaling to $15M+ ARR. Expert in roadmap planning, stakeholder management, and data-driven decision making. Strong technical background with engineering experience. Led cross-functional teams of 15+ members and owned P&L for enterprise product lines.
+
+EXPERIENCE
+
+Senior Product Manager | Freshworks, Chennai
+January 2021 - Present (4 years)
+- Lead PM for Freshservice ITSM platform serving 50,000+ enterprise customers
+- Own end-to-end product strategy, roadmap, and P&L ($15M ARR product line)
+- Launched AI-powered ticket routing feature, reducing resolution time by 40%
+- Conduct quarterly business reviews with C-level stakeholders
+- Lead team of 2 PMs, 8 engineers, and 3 designers
+- Drove product-led growth initiatives increasing trial-to-paid conversion by 25%
+- Established data-driven decision framework using Amplitude and Looker
+- Collaborated with enterprise sales on $2M+ deals, providing product expertise
+
+Product Manager | Zoho Corporation, Chennai
+June 2018 - December 2020 (2.5 years)
+- Managed Zoho CRM enterprise features for Fortune 500 clients
+- Defined and executed 18-month product roadmap aligned with company strategy
+- Led cross-functional team of 12 members across 3 time zones
+- Launched workflow automation module generating $3M incremental ARR
+- Conducted 100+ customer interviews and synthesized insights into product strategy
+- Reduced churn by 15% through targeted feature improvements
+
+Software Engineer → Associate PM | Atlassian, Sydney
+July 2015 - May 2018 (3 years)
+- Started as engineer, transitioned to APM after 2 years
+- Built features for Jira Cloud used by 100,000+ teams
+- Developed deep understanding of agile workflows and developer tools
+- Technical background enables effective collaboration with engineering
+
+EDUCATION
+
+MBA in Strategy & Operations
+Indian Institute of Management (IIM) Bangalore, 2015
+
+Bachelor of Technology in Computer Science
+IIT Bombay, 2013
+CGPA: 8.8/10
+
+TECHNICAL SKILLS
+
+Product Strategy: Roadmap Planning, Go-to-Market, Pricing Strategy, P&L Ownership
+Stakeholder Management: C-level Communication, Cross-functional Leadership, Vendor Management
+Data & Analytics: SQL (advanced), Amplitude, Mixpanel, Looker, A/B Testing, Cohort Analysis
+Research: User Interviews, Jobs-to-be-Done, Competitive Intelligence, Market Sizing
+Frameworks: RICE, Kano Model, OKRs, North Star Metrics, Product-Led Growth
+Technical: API Design, System Architecture (former engineer), Agile/Scrum
+Tools: Jira, Confluence, Figma, Notion, Productboard, Pendo
+
+CERTIFICATIONS
+- Reforge: Product Strategy (2023)
+- Pragmatic Institute: Certified Product Manager (2020)
+- AWS Cloud Practitioner (2019)
+
+ACHIEVEMENTS
+- Promoted to Senior PM in 2 years at Freshworks
+- Product Hunt: #3 Product of the Day for Freshservice AI launch
+- Speaker: SaaSBoomi 2023 - "Building Enterprise Products in India"
+- Mentor: 10+ aspiring PMs through ADPList
+- Patent: Co-inventor on intelligent ticket classification system (granted 2023)
+
+PUBLICATIONS & THOUGHT LEADERSHIP
+- "The B2B SaaS Product Playbook" - 15,000+ reads on Medium
+- Guest lecturer at IIM Bangalore on Product Management
+- Featured in YourStory: "Top 30 Product Leaders Under 35"
+
+KEY PRODUCT LAUNCHES
+1. Freshservice AI Assistant (2023) - 40% reduction in ticket resolution time
+2. Enterprise Workflow Builder (2022) - $3M ARR in first year
+3. Advanced Analytics Dashboard (2021) - 25% increase in enterprise adoption
+
+LANGUAGES
+- English (Fluent)
+- Hindi (Native)
+- Tamil (Conversational)

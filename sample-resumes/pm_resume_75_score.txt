@@ -1,0 +1,68 @@
+NEHA REDDY
+Email: neha.reddy@email.com | Phone: +91 99876 54321 | LinkedIn: linkedin.com/in/nehareddy
+
+SUMMARY
+Product Manager with 4 years of experience in B2B SaaS products. Strong background in roadmap planning, user research, and agile methodologies. Experienced in working with cross-functional teams to deliver customer-centric solutions.
+
+EXPERIENCE
+
+Product Manager | CloudTech Solutions, Bangalore
+March 2022 - Present (2.5 years)
+- Own product roadmap for enterprise collaboration tool with 10,000+ users
+- Conduct user research and customer interviews to identify pain points
+- Write detailed PRDs and user stories for engineering team
+- Prioritize features using RICE framework and stakeholder input
+- Collaborate with engineering, design, and sales teams in agile sprints
+- Launched 3 major features resulting in 20% increase in user engagement
+- Track product metrics using Mixpanel and create weekly reports
+
+Associate Product Manager | DataDrive Analytics, Hyderabad
+July 2020 - February 2022 (1.5 years)
+- Assisted senior PM in managing analytics dashboard product
+- Conducted competitive analysis and market research
+- Created wireframes and prototypes using Figma
+- Participated in sprint planning and backlog grooming
+- Gathered requirements from customers and internal stakeholders
+
+Business Analyst | Infosys, Pune
+June 2019 - June 2020 (1 year)
+- Analyzed business requirements for enterprise clients
+- Created process flow diagrams and documentation
+- Worked with development teams on requirement clarification
+
+EDUCATION
+
+MBA in Business Analytics
+Indian School of Business (ISB), 2019
+
+Bachelor of Engineering in Computer Science
+JNTU Hyderabad, 2017
+
+TECHNICAL SKILLS
+
+Product: Roadmap Planning, PRDs, User Stories, A/B Testing, Agile/Scrum
+Research: User Interviews, Surveys, Competitive Analysis, Market Research
+Analytics: Mixpanel, Google Analytics, SQL (intermediate), Excel
+Design: Figma (wireframing), Miro, Lucidchart
+Tools: Jira, Confluence, Notion, Slack, Asana
+
+CERTIFICATIONS
+- Pragmatic Institute: Product Management Foundations (2022)
+- Google Analytics Certification (2021)
+
+ACHIEVEMENTS
+- Promoted from APM to PM in 18 months
+- Speaker at local Product Management meetup
+- Increased NPS score from 35 to 52 for owned product
+
+PROJECTS
+
+Side Project: Habit Tracker App
+- Defined product requirements and user flows
+- Worked with freelance developer to build MVP
+- 500+ downloads on Play Store
+
+LANGUAGES
+- English (Fluent)
+- Hindi (Native)
+- Telugu (Native)
